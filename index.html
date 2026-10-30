@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kroatisch für den Urlaub</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#eef2f0; --surface:#ffffff; --ink:#0e2a35; --muted:#5a707a; --line:#cdd9d6;
+  --accent:#0f5c78; --on-accent:#ffffff; --red:#c9302c; --ok:#2e7d5b; --bad:#b3342f;
+  --soft:#e1ebe8;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a1b22; --surface:#10272f; --ink:#e8f1f2; --muted:#8fa8b0; --line:#1f3a44;
+    --accent:#5cc0e0; --on-accent:#06222c; --red:#ef6b5f; --ok:#6fd0a0; --bad:#f08a78;
+    --soft:#143039;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a1b22; --surface:#10272f; --ink:#e8f1f2; --muted:#8fa8b0; --line:#1f3a44;
+  --accent:#5cc0e0; --on-accent:#06222c; --red:#ef6b5f; --ok:#6fd0a0; --bad:#f08a78;
+  --soft:#143039;
+  color-scheme: dark;
+}
+html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+*{ box-sizing:border-box; }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size:17px; line-height:1.45; padding-bottom:92px; -webkit-tap-highlight-color:transparent;
+}
+button{ font:inherit; color:inherit; cursor:pointer; }
+.wrap{ max-width:640px; margin:0 auto; padding:0 16px; }
+h1,h2,h3{ font-family:'Bricolage Grotesque', 'Arial Narrow', system-ui, sans-serif; margin:0; line-height:1.05; letter-spacing:-0.01em; }
+
+/* Hero */
+.hero{ padding:22px 0 8px; }
+.hello{
+  all:unset; display:block; cursor:pointer;
+  font-family:'Bricolage Grotesque','Arial Narrow',system-ui,sans-serif; font-weight:800;
+  font-size:clamp(52px, 17vw, 96px); line-height:.92; letter-spacing:-0.03em; color:var(--accent);
+}
+.checker{
+  height:16px; width:100%; margin:14px 0 12px; border-radius:2px;
+  background:
+    conic-gradient(var(--red) 25%, transparent 0 50%, var(--red) 0 75%, transparent 0) 0 0/16px 16px;
+  border:1px solid var(--red);
+}
+.lede{ margin:0; color:var(--muted); max-width:34ch; }
+
+/* Buttons */
+.btn{
+  border:2px solid var(--ink); background:transparent; border-radius:8px; padding:12px 16px;
+  font-weight:700; min-height:48px;
+}
+.btn.primary{ background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+.btn.again{ border-color:var(--red); color:var(--red); }
+.btn.block{ width:100%; }
+.btn:disabled{ opacity:.45; cursor:default; }
+.btn.big{ min-height:72px; font-size:20px; }
+.field{ display:block; margin-top:14px; }
+.field span{ display:block; font-weight:700; margin-bottom:4px; }
+.field select{ width:100%; border:2px solid var(--ink); background:var(--surface); color:var(--ink); border-radius:8px; padding:12px; font:inherit; min-height:48px; }
+.check{ display:flex; gap:10px; align-items:center; margin-top:16px; min-height:44px; }
+.check input{ width:24px; height:24px; accent-color:var(--accent); }
+.btn:focus-visible, .topic:focus-visible, .item:focus-visible, .opt:focus-visible, nav button:focus-visible, .hello:focus-visible{ outline:3px solid var(--accent); outline-offset:2px; }
+.row{ display:flex; gap:10px; flex-wrap:wrap; }
+.row > .btn{ flex:1 1 150px; }
+.back{ all:unset; cursor:pointer; color:var(--accent); font-weight:700; padding:14px 0 6px; display:inline-block; }
+.back:focus-visible{ outline:3px solid var(--accent); outline-offset:2px; }
+
+/* segmented */
+.seg{ display:flex; border:2px solid var(--ink); border-radius:8px; overflow:hidden; margin:16px 0 4px; }
+.seg button{ flex:1; border:0; background:transparent; padding:10px 8px; font-weight:700; min-height:44px; }
+.seg button.on{ background:var(--ink); color:var(--bg); }
+
+.sec-title{ font-size:24px; margin:26px 0 10px; }
+.overall{ margin-top:18px; }
+.bar{ display:block; height:8px; background:var(--soft); border-radius:4px; overflow:hidden; margin-top:6px; }
+.bar u{ display:block; height:100%; background:var(--ok); text-decoration:none; }
+.small{ font-size:14px; color:var(--muted); }
+
+/* topics */
+.topics{ display:grid; grid-template-columns:1fr; gap:10px; }
+@media (min-width:560px){ .topics{ grid-template-columns:1fr 1fr; } }
+.topic{
+  display:flex; gap:12px; align-items:center; text-align:left; width:100%;
+  background:var(--surface); border:1px solid var(--line); border-left:8px solid var(--c, var(--accent));
+  border-radius:4px 12px 12px 4px; padding:12px 14px;
+}
+.topic .ico{ font-size:30px; width:38px; text-align:center; }
+.topic .tt{ flex:1; min-width:0; }
+.topic b{ display:block; font-family:'Bricolage Grotesque',system-ui,sans-serif; font-size:19px; line-height:1.15; }
+.topic small{ color:var(--muted); font-size:14px; }
+
+/* list items */
+.list{ margin-top:14px; border-top:1px solid var(--line); }
+.item{
+  display:flex; gap:10px; align-items:flex-start; justify-content:space-between; padding:12px 2px;
+  border-bottom:1px solid var(--line); cursor:pointer;
+}
+.item .hr{ font-weight:700; font-size:18px; }
+.item .de{ color:var(--ink); }
+.item .pron{ color:var(--muted); font-size:14px; }
+.item .note{ color:var(--muted); font-size:14px; font-style:italic; }
+.tick{ color:var(--ok); font-weight:700; margin-left:6px; }
+.chip{ display:inline-block; font-size:13px; padding:1px 8px; border-radius:10px; background:var(--soft); color:var(--muted); margin-top:2px; }
+.speak{
+  flex:none; width:44px; height:44px; border-radius:50%; border:2px solid var(--accent);
+  background:transparent; font-size:18px; line-height:1; display:grid; place-items:center;
+}
+
+/* flashcard */
+.progress-line{ display:flex; justify-content:space-between; font-size:14px; color:var(--muted); margin-top:10px; }
+.flash{
+  margin-top:12px; background:var(--surface); border:2px solid var(--ink); border-radius:6px 22px 6px 22px;
+  min-height:300px; padding:18px 18px 20px; display:flex; flex-direction:column; cursor:pointer; position:relative;
+}
+.flash .top{ display:flex; justify-content:space-between; align-items:center; min-height:44px; }
+.flash .tag{ font-size:14px; color:var(--muted); }
+.flash .main{ font-family:'Bricolage Grotesque',system-ui,sans-serif; font-weight:700; font-size:clamp(28px,8vw,40px); line-height:1.12; margin:14px 0 6px; overflow-wrap:anywhere; }
+.flash .back-side{ border-top:2px dashed var(--line); margin-top:14px; padding-top:14px; }
+.flash .ans{ font-size:clamp(22px,6.5vw,30px); font-weight:700; color:var(--accent); line-height:1.2; overflow-wrap:anywhere; }
+.flash .hint{ margin-top:auto; color:var(--muted); font-size:14px; padding-top:16px; }
+.flash .pron{ color:var(--muted); margin-top:6px; }
+.flash .note{ margin-top:8px; font-style:italic; color:var(--muted); }
+.stack{ display:grid; gap:10px; margin-top:14px; }
+.two{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+
+/* quiz */
+.qprompt{ margin-top:12px; background:var(--surface); border:2px solid var(--ink); border-radius:6px 22px 6px 22px; padding:18px; display:flex; gap:10px; justify-content:space-between; align-items:flex-start; }
+.qprompt .main{ font-family:'Bricolage Grotesque',system-ui,sans-serif; font-weight:700; font-size:clamp(24px,7vw,34px); line-height:1.15; overflow-wrap:anywhere; }
+.opts{ display:grid; gap:10px; margin-top:14px; }
+.opt{ text-align:left; background:var(--surface); border:2px solid var(--line); border-radius:10px; padding:14px; font-weight:500; min-height:52px; }
+.opt.right{ border-color:var(--ok); background:color-mix(in srgb, var(--ok) 16%, var(--surface)); }
+.opt.wrong{ border-color:var(--bad); background:color-mix(in srgb, var(--bad) 14%, var(--surface)); }
+.result-num{ font-family:'Bricolage Grotesque',system-ui,sans-serif; font-weight:800; font-size:72px; line-height:1; color:var(--accent); margin:24px 0 8px; }
+
+/* dialogs */
+.bubble{ max-width:88%; padding:12px 14px; border-radius:16px; margin:10px 0; display:flex; gap:8px; align-items:flex-start; justify-content:space-between; }
+.bubble.v{ background:var(--surface); border:1px solid var(--line); border-bottom-left-radius:4px; }
+.bubble.i{ background:var(--accent); color:var(--on-accent); margin-left:auto; border-bottom-right-radius:4px; }
+.bubble.i .speak{ border-color:var(--on-accent); }
+.bubble .who{ font-size:13px; opacity:.75; }
+.bubble .hr{ font-weight:700; }
+.bubble .de{ font-size:15px; opacity:.85; margin-top:2px; }
+
+/* search */
+.search{ width:100%; border:2px solid var(--ink); background:var(--surface); color:var(--ink); border-radius:8px; padding:13px 14px; font:inherit; margin-top:12px; }
+.search:focus-visible{ outline:3px solid var(--accent); outline-offset:2px; }
+
+/* abc */
+table{ width:100%; border-collapse:collapse; margin-top:10px; }
+th,td{ text-align:left; padding:9px 6px; border-bottom:1px solid var(--line); vertical-align:top; }
+th{ font-size:14px; color:var(--muted); font-weight:500; }
+td.ch{ font-family:'Bricolage Grotesque',system-ui,sans-serif; font-weight:800; font-size:22px; color:var(--accent); white-space:nowrap; }
+.tip{ background:var(--surface); border-left:6px solid var(--accent); padding:10px 14px; border-radius:2px 10px 10px 2px; margin:10px 0; }
+.scroll-x{ overflow-x:auto; }
+
+/* nav */
+nav{
+  position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(--surface); border-top:1px solid var(--line);
+  padding:6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+}
+nav .in{ max-width:640px; margin:0 auto; display:flex; gap:4px; }
+nav button{ flex:1; border:0; background:transparent; border-radius:10px; padding:6px 4px; display:flex; flex-direction:column; align-items:center; gap:2px; font-size:13px; color:var(--muted); min-height:52px; }
+nav button .e{ font-size:20px; line-height:1; }
+nav button.on{ color:var(--accent); background:var(--soft); font-weight:700; }
+
+#toast{
+  position:fixed; left:50%; transform:translateX(-50%); bottom:calc(84px + env(safe-area-inset-bottom, 0px)); z-index:30;
+  background:var(--ink); color:var(--bg); padding:10px 14px; border-radius:10px; max-width:90%; font-size:14px; display:none; text-align:center;
+}
+@media (prefers-reduced-motion: no-preference){
+  .flash{ transition:border-color .15s; }
+}
+</style>
+</head>
+<body>
+<main class="wrap" id="app"></main>
+<nav id="nav" aria-label="Hauptmenü"><div class="in">
+  <button data-nav="home"><span class="e">🍅</span>Lernen</button>
+  <button data-nav="dialogs"><span class="e">💬</span>Dialoge</button>
+  <button data-nav="dict"><span class="e">🔎</span>Suche</button>
+  <button data-nav="abc"><span class="e">🔤</span>Aussprache</button>
+</div></nav>
+<div id="toast" role="status"></div>
+
+<script>
+/* ---------- Daten: [Kroatisch, Deutsch, Aussprache, Hinweis] ---------- */
+const CATS = [
+{ id:'basis', icon:'👋', title:'Begrüßung & Höflichkeit', color:'#0f5c78', sub:'Die Basis für jedes Gespräch', cards:[
+ ["Dobar dan","Guten Tag","DO-bar dan"],
+ ["Dobro jutro","Guten Morgen","DO-bro JU-tro"],
+ ["Dobra večer","Guten Abend","DO-bra WE-tscher"],
+ ["Laku noć","Gute Nacht","LA-ku notj"],
+ ["Bok!","Hallo! / Tschüss!","bok","Locker, unter Bekannten. Im Laden besser „Dobar dan“."],
+ ["Doviđenja","Auf Wiedersehen","do-wi-DJE-nja"],
+ ["Hvala","Danke","CHWA-la"],
+ ["Hvala lijepa","Vielen Dank","CHWA-la LI-je-pa"],
+ ["Molim","Bitte / Wie bitte?","MO-lim"],
+ ["Izvolite","Bitte sehr (beim Bedienen oder Reichen)","IS-wo-li-te","Das hören Sie oft von Verkäufern."],
+ ["Oprostite","Entschuldigung","o-PRO-sti-te"],
+ ["Da / Ne","Ja / Nein","da / ne"],
+ ["Ne razumijem","Ich verstehe nicht","ne ra-SU-mi-jem"],
+ ["Govorite li njemački?","Sprechen Sie Deutsch?","go-WO-ri-te li NJE-matsch-ki"],
+ ["Govorite li engleski?","Sprechen Sie Englisch?"],
+ ["Možete li ponoviti, molim?","Können Sie das bitte wiederholen?"],
+ ["Polako, molim","Langsam, bitte","po-LA-ko MO-lim"],
+ ["Kako ste?","Wie geht es Ihnen?","KA-ko ste"],
+ ["Dobro, hvala. A vi?","Gut, danke. Und Ihnen?"],
+ ["Drago mi je","Freut mich","DRA-go mi je"],
+ ["Zovem se …","Ich heiße …","SO-wem se"],
+ ["Dolazim iz Njemačke","Ich komme aus Deutschland","DO-la-sim is NJE-matsch-ke","Österreich: „iz Austrije“, Schweiz: „iz Švicarske“."],
+ ["Učim hrvatski","Ich lerne Kroatisch","U-tschim CHR-wat-ski","Kommt bei Einheimischen immer gut an."],
+ ["Nema problema","Kein Problem","NE-ma PRO-ble-ma"],
+ ["Lijep dan!","Schönen Tag noch!"]
+]},
+{ id:'markt', icon:'🍅', title:'Auf dem Markt', color:'#c9302c', sub:'Tržnica: fragen, wählen, bezahlen', cards:[
+ ["Tržnica","Markt (Markthalle)","TRSCH-ni-tsa"],
+ ["Koliko košta?","Wie viel kostet das?","KO-li-ko KOSCH-ta"],
+ ["Koliko koštaju?","Wie viel kosten die? (Mehrzahl)","KO-li-ko KOSCH-ta-ju"],
+ ["Imate li …?","Haben Sie …?","I-ma-te li"],
+ ["Želio bih …","Ich möchte … (Mann)","SCHE-li-o bich"],
+ ["Željela bih …","Ich möchte … (Frau)","SCHE-je-la bich"],
+ ["Dajte mi kilogram rajčica","Geben Sie mir ein Kilo Tomaten","DAJ-te mi KI-lo-gram RAJ-tschi-tsa"],
+ ["Pola kile, molim","Ein halbes Kilo, bitte","PO-la KI-le MO-lim"],
+ ["Dvadeset deka, molim","200 Gramm, bitte","","„Deka“ = 10 g. Auf dem Markt sehr üblich."],
+ ["Malo više / malo manje","Etwas mehr / etwas weniger"],
+ ["Je li svježe?","Ist es frisch?","je li SWJE-sche"],
+ ["Je li zrelo?","Ist es reif?"],
+ ["Je li domaće?","Ist das hausgemacht / aus eigenem Anbau?","je li DO-ma-tje"],
+ ["Mogu li probati?","Kann ich probieren?","MO-gu li PRO-ba-ti"],
+ ["Što preporučujete?","Was empfehlen Sie?"],
+ ["Koji je ovo sir?","Was ist das für ein Käse?"],
+ ["Ovo, molim","Das hier, bitte","","Zeigen und sagen funktioniert immer."],
+ ["Može li malo jeftinije?","Geht es etwas günstiger?","","Eher zurückhaltend einsetzen."],
+ ["Preskupo je","Das ist zu teuer","PRE-sku-po je"],
+ ["To je sve, hvala","Das ist alles, danke","to je swe CHWA-la"],
+ ["Još nešto?","Noch etwas? (sagt der Verkäufer)"],
+ ["Imate li vrećicu?","Haben Sie eine Tüte?","I-ma-te li WRE-tji-tsu"],
+ ["Mogu li platiti karticom?","Kann ich mit Karte zahlen?","MO-gu li PLA-ti-ti KAR-ti-tsom"],
+ ["Samo gotovina","Nur Bargeld"]
+]},
+{ id:'super', icon:'🛒', title:'Im Supermarkt', color:'#2e7d5b', sub:'Trgovina: finden und zahlen', cards:[
+ ["Trgovina","Laden / Geschäft"],
+ ["Gdje je …?","Wo ist …?"],
+ ["Gdje su jaja?","Wo sind die Eier?"],
+ ["Gdje je maslinovo ulje?","Wo ist das Olivenöl?"],
+ ["Imate li svježu ribu?","Haben Sie frischen Fisch?"],
+ ["Blagajna","Kasse"],
+ ["Račun","Kassenbon / Rechnung","RA-tschun"],
+ ["Želite li vrećicu?","Möchten Sie eine Tüte?"],
+ ["Treba mi vrećica","Ich brauche eine Tüte"],
+ ["Kolica / košarica","Einkaufswagen / Korb"],
+ ["Radno vrijeme","Öffnungszeiten"],
+ ["Do kada radite?","Bis wann haben Sie geöffnet?"],
+ ["Otvoreno / zatvoreno","Geöffnet / geschlossen"],
+ ["Nedjeljom ne radimo","Sonntags haben wir geschlossen"],
+ ["Pekara","Bäckerei"],
+ ["Mesnica","Metzgerei"],
+ ["Ribarnica","Fischgeschäft / Fischmarkt"],
+ ["Ljekarna","Apotheke"],
+ ["Rok trajanja","Haltbarkeitsdatum"],
+ ["Domaći proizvodi","Regionale / hausgemachte Produkte"],
+ ["Plaćate li karticom ili gotovinom?","Zahlen Sie mit Karte oder bar?"]
+]},
+{ id:'gemuese', icon:'🥬', title:'Gemüse, Obst & Kräuter', color:'#5c8a1f', sub:'Povrće, voće i začinsko bilje', cards:[
+ ["rajčica","Tomate"],["krumpir","Kartoffel"],["luk","Zwiebel"],["češnjak","Knoblauch","TSCHESCH-njak"],
+ ["paprika","Paprika"],["tikvica","Zucchini"],["patlidžan","Aubergine"],["krastavac","Gurke"],
+ ["mrkva","Karotte"],["blitva","Mangold","","Dalmatinischer Klassiker mit Kartoffeln und Olivenöl."],
+ ["špinat","Spinat"],["gljive","Pilze"],["poriluk","Lauch"],["grah","Bohnen"],["grašak","Erbsen"],
+ ["kupus","Kohl"],["salata","Salat"],["špargle","Spargel"],["artičoke","Artischocken"],["cikla","Rote Bete"],["rukola","Rucola"],
+ ["jabuka","Apfel"],["kruška","Birne"],["limun","Zitrone"],["naranča","Orange"],["mandarine","Mandarinen","","Aus dem Neretva-Tal."],
+ ["grožđe","Weintrauben"],["smokve","Feigen"],["šljive","Pflaumen"],["breskve","Pfirsiche"],["marelice","Aprikosen"],
+ ["lubenica","Wassermelone"],["dinja","Honigmelone"],["jagode","Erdbeeren"],["maline","Himbeeren"],["trešnje","Süßkirschen"],["višnje","Sauerkirschen"],
+ ["peršin","Petersilie"],["bosiljak","Basilikum"],["ružmarin","Rosmarin"],["lovor","Lorbeer"],["kadulja","Salbei"],
+ ["origano","Oregano"],["mažuran","Majoran"],["timijan","Thymian"],["metvica","Minze"],["kopar","Dill"],["vlasac","Schnittlauch"]
+]},
+{ id:'fisch', icon:'🐟', title:'Fleisch, Fisch & Milchprodukte', color:'#0b7aa6', sub:'Meso, riba, sir', cards:[
+ ["meso","Fleisch"],["govedina","Rindfleisch"],["teletina","Kalbfleisch"],["svinjetina","Schweinefleisch"],
+ ["janjetina","Lammfleisch"],["piletina","Hähnchen"],["mljeveno meso","Hackfleisch"],["kobasica","Wurst"],
+ ["pršut","Luftgetrockneter Schinken","PRSCHUT"],["šunka","Kochschinken"],["slanina","Speck"],
+ ["puretina","Putenfleisch"],["patka","Ente"],["guska","Gans"],["zec","Hase"],["kunić","Kaninchen"],
+ ["divljač","Wild"],["srnetina","Rehfleisch"],["divlja svinja","Wildschwein"],["ovčetina","Hammelfleisch"],["kozletina","Ziegenfleisch / Zicklein"],
+ ["pileća prsa","Hähnchenbrust"],["krilca","Hähnchenflügel"],
+ ["odrezak","Steak / Schnitzel"],["teleći odrezak","Kalbsschnitzel"],["bečka šnicla","Wiener Schnitzel"],["biftek","Rindersteak"],
+ ["kotlet","Kotelett"],["svinjska rebra","Schweinerippchen"],["file","Filet"],["jetra","Leber"],
+ ["ražnjići","Fleischspieße"],["pečenje","Braten"],
+ ["koljenica","Haxe / Wadschinken (Beinscheibe)","","Klassisch für Gulasch und Schmorgerichte."],
+ ["teleća koljenica","Kalbshaxe"],["goveđa koljenica","Rinderhesse / Wadschinken"],
+ ["plećka","Schulter"],["lopatica","Schulterstück"],["vrat","Nacken / Hals"],["goveđi vrat","Rinderhals"],["svinjski vrat","Schweinenacken"],
+ ["goveđi rep","Ochsenschwanz"],["but","Keule"],["potrbušina","Bauchfleisch"],["karé","Karree / Rippenstück"],["lungić","Lende (Schwein)"],["ramstek","Rumpsteak"],
+ ["kosti","Knochen"],["goveđa juha","Rindsuppe"],
+ ["gulaš","Gulasch"],["goveđi gulaš","Rindergulasch"],["teleći gulaš","Kalbsgulasch"],
+ ["paprikaš","Paprikaeintopf"],["čobanac","Hirteneintopf (Slawonien)"],["varivo","Eintopf"],["umak","Soße"],["salama","Salami"],["čvarci","Grieben (knusprige Speckstückchen)"],
+ ["riba","Fisch"],["tuna","Thunfisch"],["srdele","Sardinen"],["inćuni","Sardellen"],["skuša","Makrele"],
+ ["brancin","Wolfsbarsch"],["orada","Dorade"],["zubatac","Zahnbrasse","","Dalmatinische Delikatesse."],["list","Seezunge"],
+ ["lignje","Kalmare"],["sipa","Tintenfisch (Sepia)"],["hobotnica","Oktopus"],["školjke","Muscheln"],["dagnje","Miesmuscheln"],
+ ["kamenice","Austern"],["škampi","Scampi"],["jastog","Hummer"],
+ ["losos","Lachs"],["bakalar","Kabeljau / Dorsch","","Meist als Stockfisch. Klassiker: „bakalar na bijelo“."],["oslić","Seehecht"],
+ ["grdobina","Seeteufel"],["škarpina","Drachenkopf","","Sehr beliebt für Brudet."],["lubin","Wolfsbarsch","","Im Norden oft „lubin“ statt „brancin“."],
+ ["trlja","Meerbarbe"],["sabljarka","Schwertfisch"],["palamida","Pelamide (kleine Thunfischart)"],
+ ["ugor","Meeraal"],["jegulja","Aal"],["pastrva","Forelle"],["šaran","Karpfen"],["smuđ","Zander"],["štuka","Hecht"],
+ ["rak","Krebs"],["kozice","Garnelen"],["plodovi mora","Meeresfrüchte"],
+ ["riblji file","Fischfilet"],["riblja juha","Fischsuppe"],
+ ["morski pas","Hai"],
+ ["sir","Käse"],["paški sir","Käse von der Insel Pag"],["ovčji sir","Schafskäse"],["kozji sir","Ziegenkäse"],
+ ["mlijeko","Milch"],["vrhnje","Sahne"],["kiselo vrhnje","Saure Sahne"],["maslac","Butter"],["jogurt","Joghurt"],["skuta","Quark / Frischkäse"],["jaja","Eier"]
+]},
+{ id:'vorrat', icon:'🫒', title:'Vorrat, Gewürze & Getränke', color:'#8a7a1f', sub:'Namirnice i pića', cards:[
+ ["kruh","Brot"],["brašno","Mehl"],["šećer","Zucker"],["sol","Salz"],["papar","Pfeffer"],["začin","Gewürz"],
+ ["maslinovo ulje","Olivenöl"],["domaće maslinovo ulje","Hausgemachtes Olivenöl"],["ocat","Essig"],["vinski ocat","Weinessig"],
+ ["masline","Oliven"],["kapari","Kapern"],["riža","Reis"],["tjestenina","Nudeln"],["med","Honig"],
+ ["orasi","Walnüsse"],["bademi","Mandeln"],["džem","Marmelade","dschem"],
+ ["kava","Kaffee"],["čaj","Tee","tschaj"],["voda","Wasser"],["gazirana voda","Wasser mit Kohlensäure"],["negazirana voda","Stilles Wasser"],
+ ["sok","Saft"],["pivo","Bier"],["vino","Wein","WI-no"],["bijelo vino","Weißwein"],["crno vino","Rotwein"],["rakija","Obstbrand"]
+]},
+{ id:'koch', icon:'👨‍🍳', title:'Hobbykoch: Zubereitung', color:'#b5541c', sub:'Fragen, Garmethoden, Geschmack', cards:[
+ ["Volim kuhati","Ich koche gern","WO-lim KU-cha-ti","Ein guter Gesprächseinstieg mit Marktleuten."],
+ ["Kako se priprema ovo jelo?","Wie wird dieses Gericht zubereitet?"],
+ ["Možete li mi dati recept?","Können Sie mir das Rezept geben?"],
+ ["Kako to najbolje pripremiti?","Wie bereitet man das am besten zu?"],
+ ["Što ide uz ovo?","Was passt dazu?"],
+ ["Koja je ovo riba?","Was ist das für ein Fisch?"],
+ ["Možete li je očistiti, molim?","Können Sie ihn bitte ausnehmen und säubern?","","„je“ steht hier für „riba“ (der Fisch)."],
+ ["kuhati","kochen"],["peći","braten / backen"],["pržiti","in der Pfanne braten / frittieren"],["pirjati","schmoren / dünsten"],
+ ["rezati","schneiden"],["miješati","rühren"],["začiniti","würzen"],["posoliti","salzen"],
+ ["na žaru","vom Grill"],["na gradele","auf dem Holzkohlegrill","","Dalmatinischer Ausdruck."],["ispod peke","unter der Eisenglocke"],
+ ["pečeno","gebacken / gebraten"],["kuhano","gekocht"],["pirjano","geschmort"],["prženo","gebraten / frittiert"],
+ ["sirovo","roh"],["dimljeno","geräuchert"],["domaće","hausgemacht"],
+ ["ljuto","scharf"],["slano","salzig"],["slatko","süß"],["gorko","bitter"],["kiselo","sauer"],["ukusno","lecker"],["hrskavo","knusprig"],["mekano","weich"],
+ ["tava","Pfanne"],["lonac","Topf"],["nož","Messer"],["vilica","Gabel"],["žlica","Löffel"],["zdjela","Schüssel"],
+ ["Treba mi meso za gulaš","Ich brauche Fleisch für Gulasch"],
+ ["Koji je dio najbolji za gulaš?","Welches Stück ist am besten für Gulasch?"],
+ ["Imate li teleću koljenicu?","Haben Sie Kalbshaxe?"],
+ ["Možete li je narezati na kolute?","Können Sie sie in Scheiben schneiden?"],
+ ["Možete li ga narezati na kocke?","Können Sie es in Würfel schneiden?"],
+ ["s kosti / bez kostiju","mit Knochen / ohne Knochen"],
+ ["kocke","Würfel"],["kockice","kleine Würfel"],
+ ["dinstati","schmoren / dünsten"],
+ ["na laganoj vatri","auf kleiner Flamme"]
+]},
+{ id:'spez', icon:'🍲', title:'Spezialitäten', color:'#7a3b8c', sub:'Was Sie probieren sollten', cards:[
+ ["Brudet","Dalmatinischer Fischeintopf mit Tomaten und Wein"],
+ ["Gregada","Fischeintopf von der Insel Hvar mit Kartoffeln"],
+ ["Buzara","Muscheln oder Scampi im Weißwein-Knoblauch-Sud"],
+ ["Crni rižot","Schwarzes Risotto mit Tintenfisch"],
+ ["Pašticada","Rinderschmorbraten mit Gnocchi (Dalmatien)"],
+ ["Peka","Fleisch oder Fisch mit Gemüse unter der glühenden Eisenglocke"],
+ ["Janjetina na ražnju","Lamm am Spieß"],
+ ["Soparnik","Mangoldpastete aus Dalmatien"],
+ ["Pršut","Luftgetrockneter Schinken aus Dalmatien und Istrien"],
+ ["Paški sir","Würziger Schafskäse von der Insel Pag"],
+ ["Ćevapi","Gegrillte Hackfleischröllchen"],
+ ["Štrukli","Teigtaschen mit Quarkfüllung (Zagorje)"],
+ ["Sarma","Krautwickel mit Hackfleisch"],
+ ["Burek","Blätterteigtasche mit Fleisch oder Käse"],
+ ["Kulen","Slawonische Paprika-Salami"],
+ ["Fritule","Kleine Krapfen"],
+ ["Rožata","Karamellpudding aus Dubrovnik"],
+ ["Palačinke","Pfannkuchen"],
+ ["Travarica","Kräuterschnaps"],
+ ["Prošek","Süßer Dessertwein aus Dalmatien"],
+ ["Malvazija","Weißwein aus Istrien"],
+ ["Graševina","Weißwein aus Slawonien"],
+ ["Plavac mali","Kräftiger dalmatinischer Rotwein"]
+]},
+{ id:'resto', icon:'🍷', title:'Restaurant & Konoba', color:'#a3243b', sub:'Bestellen, genießen, zahlen', cards:[
+ ["Konoba","Traditionelles Lokal mit regionaler Küche"],
+ ["Rezervirao sam stol na ime …","Ich habe einen Tisch auf den Namen … reserviert","","Frau: „Rezervirala sam …“"],
+ ["Stol za dvoje, molim","Einen Tisch für zwei, bitte"],
+ ["Imate li slobodan stol?","Haben Sie einen freien Tisch?"],
+ ["Jelovnik, molim","Die Speisekarte, bitte"],
+ ["Što je specijalitet kuće?","Was ist die Spezialität des Hauses?"],
+ ["Koju ribu imate danas?","Welchen Fisch haben Sie heute?"],
+ ["Za početak …","Als Vorspeise …"],
+ ["Glavno jelo","Hauptgericht"],
+ ["Desert","Nachspeise"],
+ ["Vodu, molim","Wasser, bitte"],
+ ["Jedna kava, molim","Einen Kaffee, bitte"],
+ ["Čašu crnog vina, molim","Ein Glas Rotwein, bitte"],
+ ["Čašu bijelog vina, molim","Ein Glas Weißwein, bitte"],
+ ["Jedno pivo, molim","Ein Bier, bitte"],
+ ["Alergičan sam na …","Ich bin allergisch gegen … (Mann)","","Frau: „Alergična sam na …“"],
+ ["Ja sam vegetarijanac / vegetarijanka","Ich bin Vegetarier / Vegetarierin"],
+ ["Bez mesa, molim","Ohne Fleisch, bitte"],
+ ["Prijatno!","Guten Appetit!","PRI-jat-no"],
+ ["Živjeli!","Prost!","SCHI-wje-li"],
+ ["Bilo je odlično","Es war ausgezeichnet","BI-lo je od-LITSCH-no"],
+ ["Račun, molim","Die Rechnung, bitte","RA-tschun MO-lim"],
+ ["Zajedno ili odvojeno?","Zusammen oder getrennt?"],
+ ["Ostatak je za vas","Der Rest ist für Sie (Trinkgeld)"],
+ ["Možemo li dobiti jelovnik na njemačkom?","Können wir die Speisekarte auf Deutsch bekommen?"],
+ ["Što je u ovom jelu?","Was ist in diesem Gericht?"],
+ ["Je li ovo ljuto?","Ist das scharf?"],
+ ["Ima li glutena u ovom jelu?","Ist in diesem Gericht Gluten?"],
+ ["Bez luka, molim","Ohne Zwiebeln, bitte"],
+ ["jelo dana","Tagesgericht"],
+ ["predjelo","Vorspeise"],
+ ["juha","Suppe"],
+ ["prilog","Beilage"],
+ ["Mogu li dobiti još kruha?","Kann ich noch Brot bekommen?"],
+ ["Još jedno pivo, molim","Noch ein Bier, bitte"],
+ ["Ovo nisam naručio","Das habe ich nicht bestellt (Mann)","","Frau: „Ovo nisam naručila“"],
+ ["Jelo je hladno","Das Essen ist kalt"],
+ ["Primate li kartice?","Akzeptieren Sie Karten?"],
+ ["Možemo li platiti odvojeno?","Können wir getrennt zahlen?"],
+ ["Vrlo ukusno!","Sehr lecker!"],
+ ["Hvala, sve je bilo izvrsno","Danke, alles war ausgezeichnet"],
+ ["konobar / konobarica","Kellner / Kellnerin"]
+]},
+{ id:'camp', icon:'⛺', title:'Campingplatz', color:'#8a5a2b', sub:'Autokamp: Ankunft, Platz, Probleme, Abreise', cards:[
+ ["autokamp / kamp","Campingplatz"],
+ ["recepcija","Rezeption"],
+ ["Imate li slobodno mjesto?","Haben Sie noch einen freien Stellplatz?"],
+ ["Imamo rezervaciju na ime …","Wir haben auf den Namen … reserviert"],
+ ["Koliko noći ostajete?","Wie viele Nächte bleiben Sie?"],
+ ["Ostajemo tri noći","Wir bleiben drei Nächte"],
+ ["Koliko košta jedna noć?","Wie viel kostet eine Nacht?"],
+ ["putovnica / osobna iskaznica","Reisepass / Personalausweis","","Wird bei der Anmeldung verlangt."],
+ ["mjesto / parcela","Stellplatz"],
+ ["šator","Zelt"],["kamper","Wohnmobil"],["karavan","Wohnwagen"],["mobilna kućica","Mobilheim"],
+ ["Imate li mjesto blizu mora?","Haben Sie einen Platz nah am Meer?"],
+ ["Imate li mjesto u hladu?","Haben Sie einen Platz im Schatten?"],
+ ["struja","Strom"],
+ ["Gdje je priključak za struju?","Wo ist der Stromanschluss?"],
+ ["pitka voda","Trinkwasser"],
+ ["Gdje mogu napuniti vodu?","Wo kann ich Wasser auffüllen?"],
+ ["sanitarije","Sanitäranlagen / Waschhaus"],
+ ["tuš","Dusche"],
+ ["topla voda","Warmwasser"],
+ ["Nema tople vode","Es gibt kein warmes Wasser"],
+ ["Nema struje","Es gibt keinen Strom"],
+ ["Ne radi tuš","Die Dusche funktioniert nicht"],
+ ["Imate li wifi?","Haben Sie WLAN?"],
+ ["Koja je lozinka za wifi?","Wie lautet das WLAN-Passwort?"],
+ ["noćni mir","Nachtruhe"],
+ ["Kada počinje noćni mir?","Wann beginnt die Nachtruhe?"],
+ ["Smijem li roštiljati ovdje?","Darf ich hier grillen?"],
+ ["roštilj","Grill"],
+ ["ugljen","Holzkohle"],
+ ["plinska boca","Gasflasche"],
+ ["hladnjak","Kühlschrank"],
+ ["smeće","Müll"],
+ ["Gdje je kontejner za smeće?","Wo ist der Müllcontainer?"],
+ ["Gdje je najbliža trgovina?","Wo ist der nächste Laden?"],
+ ["turistička pristojba","Kurtaxe"],
+ ["Do koliko sati moramo otići?","Bis wie viel Uhr müssen wir abreisen?"],
+ ["Želimo produžiti za jednu noć","Wir möchten eine Nacht verlängern"],
+ ["Moraš li na WC?","Musst du aufs Klo?","MO-rasch li na WE-TSE"],
+ ["Jesi li bio / bila na WC-u?","Warst du am Klo?","","bio = Mann, bila = Frau"],
+ ["Moraš li na veliku nuždu?","Musst du großes Geschäft machen? (höflich)","MO-rasch li na WE-li-ku NU-schdu"],
+ ["Moraš li srati?","Musst du scheissen? (derb)","MO-rasch li SRA-ti","Derb. Nur unter Familie und Freunden."],
+ ["Moram na WC","Ich muss aufs Klo"],
+ ["Moram srati","Ich muss scheissen (derb)","MO-ram SRA-ti","Derb. Nur unter Familie und Freunden."],
+ ["Moram piškiti","Ich muss pinkeln","MO-ram PISCH-ki-ti"],
+ ["Koliko je hladno more?","Wie kalt ist das Meer?","KO-li-ko je CHLAD-no MO-re"],
+ ["Je li voda hladna?","Ist das Wasser kalt?"],
+ ["Jesi li već bio / bila u moru?","Warst du schon im Meer?","","bio = Mann, bila = Frau"],
+ ["Ideš li još plivati?","Gehst du noch schwimmen?","I-desch li josch PLI-wa-ti"],
+ ["Idemo se kupati","Wir gehen baden"],
+ ["Danas kuham ja","Heute koche ich","DA-nas KU-cham ja"],
+ ["Idemo jesti","Wir gehen essen","I-de-mo JE-sti"],
+ ["Idemo na večeru","Wir gehen zum Abendessen"],
+ ["Idemo na ručak","Wir gehen zum Mittagessen"],
+ ["Idemo u konobu","Wir gehen in die Konoba"],
+ ["Jesi li gladan / gladna?","Hast du Hunger?"],
+ ["Večera je gotova!","Das Abendessen ist fertig!"],
+ ["Dođi jesti!","Komm essen!"]
+]},
+{ id:'keto', icon:'🥑', title:'Keto & Low Carb', color:'#a67c00', sub:'Bestellen und einkaufen ohne Kohlenhydrate', cards:[
+ ["Držim se keto prehrane","Ich ernähre mich ketogen"],
+ ["Jedem malo ugljikohidrata","Ich esse wenig Kohlenhydrate"],
+ ["Ne jedem kruh, tjesteninu ni rižu","Ich esse kein Brot, keine Nudeln und keinen Reis"],
+ ["Bez ugljikohidrata, molim","Ohne Kohlenhydrate, bitte"],
+ ["Bez šećera, molim","Ohne Zucker, bitte"],
+ ["Bez kruha, molim","Ohne Brot, bitte"],
+ ["Što imate bez ugljikohidrata?","Was haben Sie ohne Kohlenhydrate?"],
+ ["Može li bez priloga?","Geht es ohne Beilage?"],
+ ["Može li salata umjesto krumpira?","Kann ich Salat statt Kartoffeln haben?"],
+ ["Samo salatu i meso, molim","Nur Salat und Fleisch, bitte"],
+ ["Je li ovo pohano?","Ist das paniert?"],
+ ["Mogu li dobiti meso bez umaka?","Kann ich das Fleisch ohne Soße bekommen?"],
+ ["Ima li u umaku brašna ili šećera?","Ist in der Soße Mehl oder Zucker?"],
+ ["Je li ovo zaslađeno?","Ist das gesüßt?"],
+ ["Ima li šećera u ovome?","Ist da Zucker drin?"],
+ ["Mogu li dobiti dodatno maslinovo ulje?","Kann ich extra Olivenöl bekommen?"],
+ ["Kavu s vrhnjem, bez šećera","Kaffee mit Sahne, ohne Zucker"],
+ ["suho vino","Trockener Wein"],
+ ["ugljikohidrati","Kohlenhydrate"],
+ ["masti","Fette"],
+ ["bjelančevine","Eiweiß"],
+ ["škrob","Stärke"],
+ ["vlakna","Ballaststoffe"],
+ ["zaslađivač","Süßungsmittel"],
+ ["kalorije","Kalorien"],
+ ["nutritivne vrijednosti","Nährwerte"],
+ ["sastojci","Zutaten"],
+ ["etiketa","Etikett"],
+ ["bez glutena","glutenfrei"],
+ ["bez laktoze","laktosefrei"],
+ ["punomasno","Vollfett","","Z. B. „punomasni jogurt“."],
+ ["avokado","Avocado"],
+ ["krem sir","Frischkäse"],
+ ["parmezan","Parmesan"],
+ ["mozzarela","Mozzarella"],
+ ["feta sir","Feta"],
+ ["grčki jogurt","Griechischer Joghurt"],
+ ["kokosovo ulje","Kokosöl"],
+ ["orašasti plodovi","Nüsse"],
+ ["lješnjaci","Haselnüsse"],
+ ["chia sjemenke","Chiasamen"],
+ ["lanene sjemenke","Leinsamen"],
+ ["sjemenke bundeve","Kürbiskerne"],
+ ["tamna čokolada","Dunkle Schokolade"],
+ ["cvjetača","Blumenkohl"],
+ ["brokula","Brokkoli"],
+ ["prokulice","Rosenkohl"],
+ ["celer","Sellerie"],
+ ["rotkvica","Radieschen"],
+ ["zelena salata","Grüner Salat"],
+ ["omlet","Omelett"],
+ ["kajgana","Rührei"],
+ ["jaja na oko","Spiegeleier"],
+ ["kuhano jaje","Gekochtes Ei"],
+ ["jaja sa slaninom","Eier mit Speck"],
+ ["plata sira i pršuta","Käse- und Schinkenplatte"],
+ ["salata od hobotnice","Oktopussalat"],
+ ["lignje na žaru","Gegrillte Kalmare"],
+ ["riba na žaru","Gegrillter Fisch"],
+ ["meso na žaru","Gegrilltes Fleisch"],
+ ["pečeno povrće","Ofengemüse"],
+ ["pržiti na maslacu","In Butter braten"],
+ ["lepinja","Fladenbrot","","Wird zu Ćevapi serviert."],
+ ["palenta","Polenta","","Kommt oft zu Brudet."],
+ ["njoki","Gnocchi","","Kommen zu Pašticada."],
+ ["pomfrit","Pommes frites"],
+ ["mahunarke","Hülsenfrüchte"],
+ ["žitarice","Getreide / Cerealien"],
+ ["zobene pahuljice","Haferflocken"],
+ ["slatkiši","Süßigkeiten"],
+ ["keksi","Kekse"],
+ ["kolači","Kuchen"]
+]},
+{ id:'zahlen', icon:'🔢', title:'Zahlen & Mengen', color:'#46607a', sub:'Brojevi i mjere: von 0 bis 1000', cards:[
+ ["nula","0"],["jedan","1","JE-dan"],["dva","2"],["tri","3"],["četiri","4","TSCHE-ti-ri"],["pet","5"],["šest","6"],["sedam","7"],["osam","8"],["devet","9"],["deset","10"],
+ ["jedanaest","11"],["dvanaest","12"],["trinaest","13"],["četrnaest","14"],["petnaest","15"],["šesnaest","16"],["sedamnaest","17"],["osamnaest","18"],["devetnaest","19"],
+ ["dvadeset","20"],["dvadeset i jedan","21"],["trideset","30"],["četrdeset","40"],["pedeset","50"],["šezdeset","60"],["sedamdeset","70"],["osamdeset","80"],["devedeset","90"],
+ ["sto","100"],["sto dvadeset","120"],["dvjesto","200"],["tristo","300"],["petsto","500"],["tisuću","1000"],
+ ["dva / dvije","2 (dva: männlich/sächlich, dvije: weiblich)","","Dva piva, dvije kave."],
+ ["prvi / drugi / treći","erster / zweiter / dritter"],
+ ["Koliko vas je?","Wie viele sind Sie?"],
+ ["ukupno","insgesamt"],
+ ["Koliko je ukupno?","Wie viel macht das insgesamt?"],
+ ["kilogram / kilo","Kilogramm"],["pola kile","Ein halbes Kilo"],["deka","10 Gramm","","Dvadeset deka = 200 g."],["litra","Liter"],["komad","Stück"],["vezica","Bund (z. B. Petersilie)"],
+ ["euro / centi","Euro / Cent"]
+]},
+{ id:'kalender', icon:'📅', title:'Kalender & Zeit', color:'#6b5b95', sub:'Tage, Monate, Jahreszeiten, Uhrzeit', cards:[
+ ["ponedjeljak","Montag"],["utorak","Dienstag"],["srijeda","Mittwoch"],["četvrtak","Donnerstag"],["petak","Freitag"],["subota","Samstag"],["nedjelja","Sonntag"],
+ ["U petak","Am Freitag"],
+ ["Koji je danas dan?","Welcher Tag ist heute?"],
+ ["Koji je danas datum?","Welches Datum ist heute?"],
+ ["siječanj","Januar","","Im Satz ändert sich die Endung: „u siječnju“ = im Januar."],
+ ["veljača","Februar"],["ožujak","März"],["travanj","April"],["svibanj","Mai"],["lipanj","Juni"],
+ ["srpanj","Juli"],["kolovoz","August"],["rujan","September"],["listopad","Oktober"],["studeni","November"],["prosinac","Dezember"],
+ ["proljeće","Frühling"],["ljeto","Sommer"],["jesen","Herbst"],["zima","Winter"],
+ ["danas","heute"],["sutra","morgen"],["prekosutra","übermorgen"],["jučer","gestern"],
+ ["jutros","heute Morgen"],["ujutro","morgens"],["popodne","nachmittags"],["navečer","abends"],["noću","nachts"],
+ ["sada","jetzt"],["kasnije","später"],["uskoro","bald"],
+ ["Koliko je sati?","Wie spät ist es?"],
+ ["U koliko sati?","Um wie viel Uhr?"],
+ ["Pet je sati","Es ist fünf Uhr"],
+ ["sat","Stunde / Uhr"],["minuta","Minute"],["dan","Tag"],["tjedan","Woche"],["mjesec","Monat"],["godina","Jahr"],["vikend","Wochenende"],
+ ["svaki dan","jeden Tag"],["ovaj tjedan","diese Woche"],["sljedeći tjedan","nächste Woche"],["prošli tjedan","letzte Woche"]
+]},
+{ id:'farben', icon:'🎨', title:'Farben, Eigenschaften & Wetter', color:'#d1495b', sub:'Boje, opisi, vrijeme', cards:[
+ ["crven","rot","","Weiblich: crvena (crvena paprika), sächlich: crveno. Bei allen Farben ebenso."],
+ ["plav","blau"],["zelen","grün"],["žut","gelb"],["bijel","weiß"],["crn","schwarz"],
+ ["narančast","orange"],["smeđ","braun"],["siv","grau"],["ljubičast","violett"],["ružičast","rosa"],
+ ["svijetlo","hell","","Svijetlo plavo = hellblau"],["tamno","dunkel"],
+ ["Imate li ovo u plavoj boji?","Haben Sie das in Blau?"],
+ ["Koje je boje?","Welche Farbe hat es?"],
+ ["velik","groß"],["mali","klein"],["dobar","gut"],["loš","schlecht"],["nov","neu"],["star","alt"],
+ ["lijep","schön"],["čist","sauber"],["prljav","schmutzig"],
+ ["skup","teuer"],["jeftin","billig"],["svjež","frisch"],
+ ["brz","schnell"],["spor","langsam"],["blizu","nah"],["daleko","weit"],
+ ["puno","viel"],["malo","wenig"],["dovoljno","genug"],
+ ["otvoren","offen"],["zatvoren","geschlossen"],
+ ["Kakvo je vrijeme?","Wie ist das Wetter?"],
+ ["sunčano","sonnig"],["oblačno","bewölkt"],["kiša","Regen"],["vjetar","Wind"],
+ ["bura","kalter Fallwind an der Adria"],["jugo","feuchter Südwind"],["grmljavina","Gewitter"],["oluja","Sturm"],
+ ["toplo","warm"],["hladno","kalt"],["vruće","heiß"],
+ ["Hoće li kišiti?","Wird es regnen?"],
+ ["more","Meer"]
+]},
+{ id:'richtung', icon:'🧭', title:'Richtungen & Orientierung', color:'#2a6f97', sub:'Links, rechts, geradeaus und den Weg erfragen', cards:[
+ ["lijevo","links","LJE-wo"],
+ ["desno","rechts","DES-no"],
+ ["ravno","geradeaus","RAW-no"],
+ ["gore","oben / hinauf"],["dolje","unten / hinunter"],
+ ["ovdje","hier"],["tamo","dort"],["ovuda","hier entlang"],
+ ["ispred","vor"],["iza","hinter"],["pored","neben"],["preko puta","gegenüber"],
+ ["sjever","Norden"],["jug","Süden"],["istok","Osten"],["zapad","Westen"],
+ ["Skrenite lijevo","Biegen Sie links ab"],
+ ["Skrenite desno","Biegen Sie rechts ab"],
+ ["Idite ravno","Gehen Sie geradeaus"],
+ ["Idite ravno pa lijevo","Gehen Sie geradeaus, dann links"],
+ ["na prvom raskrižju","an der ersten Kreuzung"],
+ ["na semaforu","an der Ampel"],
+ ["kod crkve","bei der Kirche"],
+ ["raskrižje","Kreuzung"],["semafor","Ampel"],["zavoj","Kurve"],
+ ["ulica","Straße (in der Stadt)"],["cesta","Straße (Landstraße)"],["trg","Platz"],["most","Brücke"],
+ ["ulaz","Eingang"],["izlaz","Ausgang"],["parkiralište","Parkplatz"],["luka","Hafen"],
+ ["stanica","Haltestelle / Station"],["autobusna stanica","Busbahnhof"],
+ ["pješice","zu Fuß"],
+ ["Koliko je daleko?","Wie weit ist es?"],
+ ["Koliko minuta pješice?","Wie viele Minuten zu Fuß?"],
+ ["Je li ovo pravi put za …?","Ist das der richtige Weg nach …?"],
+ ["Gdje smo sada?","Wo sind wir jetzt?"],
+ ["Možete li mi pokazati na karti?","Können Sie mir das auf der Karte zeigen?"],
+ ["Izgubio sam se / izgubila sam se","Ich habe mich verirrt"]
+]},
+{ id:'flirt', icon:'🌅', title:'Flirten & Kennenlernen', color:'#b0306a', sub:'Charmant, respektvoll und mit Stil', cards:[
+ ["Smijem li sjesti ovdje?","Darf ich mich hierher setzen?","","Hier steht alles in der Du-Form („ti“)."],
+ ["Je li ovdje slobodno?","Ist hier frei?"],
+ ["Smijem li te nešto pitati?","Darf ich dich etwas fragen?"],
+ ["Kako se zoveš?","Wie heißt du?"],
+ ["Drago mi je što smo se upoznali","Schön, dass wir uns kennengelernt haben"],
+ ["Odakle si?","Woher kommst du?"],
+ ["Jesi li odavde?","Bist du von hier?"],
+ ["Jesi li na odmoru?","Bist du im Urlaub?"],
+ ["Čime se baviš?","Was machst du beruflich?"],
+ ["Voliš li kuhati?","Kochst du gern?"],
+ ["Što voliš raditi u slobodno vrijeme?","Was machst du in deiner Freizeit gern?"],
+ ["Kako ti se sviđa Hrvatska?","Wie gefällt dir Kroatien?"],
+ ["Umirovljenik sam / umirovljenica sam","Ich bin Rentner / Rentnerin"],
+ ["Imam djecu i unuke","Ich habe Kinder und Enkel"],
+ ["Razveden sam / razvedena sam","Ich bin geschieden"],
+ ["Udovac sam / udovica sam","Ich bin Witwer / Witwe"],
+ ["Nisam u vezi","Ich bin nicht in einer Beziehung"],
+ ["Godine su samo broj","Alter ist nur eine Zahl"],
+ ["Mlad / mlada si duhom","Du bist jung im Geiste"],
+ ["Lijepo izgledaš","Du siehst gut aus"],
+ ["Imaš prekrasan osmijeh","Du hast ein wunderschönes Lächeln"],
+ ["Imaš lijepe oči","Du hast schöne Augen"],
+ ["Ovo ti jako pristaje","Das steht dir sehr gut"],
+ ["Odlično kuhaš!","Du kochst ausgezeichnet!"],
+ ["Imaš smisla za humor","Du hast Sinn für Humor"],
+ ["Ti si divna osoba","Du bist ein wunderbarer Mensch"],
+ ["Ugodno je razgovarati s tobom","Es ist angenehm, mit dir zu sprechen"],
+ ["Sviđaš mi se","Du gefällst mir"],
+ ["Hvala na komplimentu","Danke für das Kompliment"],
+ ["Mogu li te počastiti pićem?","Darf ich dich auf ein Getränk einladen?"],
+ ["Mogu li te pozvati na kavu?","Darf ich dich auf einen Kaffee einladen?"],
+ ["Želiš li prošetati uz more?","Möchtest du am Meer spazieren gehen?"],
+ ["Pogledajmo zalazak sunca zajedno","Lass uns den Sonnenuntergang gemeinsam ansehen"],
+ ["Imaš li planove za večeras?","Hast du heute Abend etwas vor?"],
+ ["Želiš li večerati sa mnom?","Möchtest du mit mir zu Abend essen?"],
+ ["Mogu li ti skuhati večeru?","Darf ich dir das Abendessen kochen?"],
+ ["Hoćeš li plesati sa mnom?","Möchtest du mit mir tanzen?"],
+ ["Za tvoje zdravlje!","Auf deine Gesundheit!"],
+ ["Mogu li dobiti tvoj broj telefona?","Darf ich deine Telefonnummer haben?"],
+ ["Javi mi se","Melde dich bei mir"],
+ ["Bilo mi je jako ugodno s tobom","Es war sehr angenehm mit dir"],
+ ["Uživam u tvom društvu","Ich genieße deine Gesellschaft"],
+ ["Divna večer!","Was für ein wunderbarer Abend!"],
+ ["Hvala na divnoj večeri","Danke für den wunderbaren Abend"],
+ ["Rado!","Gern!"],
+ ["Hvala na pozivu","Danke für die Einladung"],
+ ["Možda drugi put","Vielleicht ein andermal"],
+ ["Hvala, ali ne mogu","Danke, aber ich kann nicht"],
+ ["Hvala, nisam zainteresiran / zainteresirana","Danke, ich bin nicht interessiert"],
+ ["U vezi sam","Ich bin in einer Beziehung"],
+ ["Oženjen sam / udana sam","Ich bin verheiratet"],
+ ["Nije mi ugodno","Mir ist das unangenehm"],
+ ["Moram ići","Ich muss gehen"],
+ ["Molim te, ostavi me na miru","Bitte lass mich in Ruhe","","Deutlich und höflich. Funktioniert überall."],
+ ["simpatičan","sympathisch"],
+ ["šarmantan","charmant"],
+ ["duhovit","witzig / geistreich"],
+ ["zgodan","gutaussehend"],
+ ["elegantan","elegant"],
+ ["ljubazan","freundlich"],
+ ["romantičan","romantisch"],
+ ["osmijeh","Lächeln"],
+ ["zalazak sunca","Sonnenuntergang"],
+ ["društvo","Gesellschaft"]
+]},
+{ id:'alltag', icon:'🌊', title:'Unterwegs & Smalltalk', color:'#1a8f8f', sub:'Wegbeschreibung, Wetter, nette Worte', cards:[
+ ["Žao mi je, nažalost ne razumijem hrvatski","Es tut mir leid, ich verstehe leider kein Kroatisch","SCHA-o mi je, na-SCHA-lost ne ra-SU-mi-jem CHR-wat-ski","Der Clou: völlig akzentfrei gesprochen wirkt der Satz überraschend und charmant."],
+ ["Šalim se! Učim hrvatski","Ich mache nur Spaß! Ich lerne Kroatisch","SCHA-lim se! U-tschim CHR-wat-ski","Die Auflösung nach dem ersten Satz."],
+ ["Ja sam Gerhard Veličanstveni i dolazim iz prekrasnog Melka u dolini Wachau u Austriji","Ich bin Gerhard der Großartige und ich komme aus dem wunderschönen Melk in der Wachau in Österreich","ja sam GER-hard we-li-TSCHAN-stwe-ni i DO-la-sim is pre-KRA-snog MEL-ka u DO-li-ni WA-chau u AU-stri-ji","„Veličanstveni“ heißt prachtvoll und erhaben, so wie bei Sulejman dem Prächtigen. „Veliki“ wäre „der Große“. „U dolini Wachau“ heißt im Wachautal."],
+ ["Žao mi je, ne govorim hrvatski","Es tut mir leid, ich spreche kein Kroatisch"],
+ ["Nažalost, ne razumijem ni riječ","Leider verstehe ich kein einziges Wort","na-SCHA-lost ne ra-SU-mi-jem ni RI-jetsch"],
+ ["Gdje je toalet?","Wo ist die Toilette?"],
+ ["Gdje je plaža?","Wo ist der Strand?"],
+ ["Kako dolazim do …?","Wie komme ich zu …?"],
+ ["Je li daleko?","Ist es weit?"],
+  
+ ["Pomoć!","Hilfe!"],
+ ["Trebam liječnika","Ich brauche einen Arzt"],
+ ["Imate li preporuku?","Haben Sie eine Empfehlung?"],
+ ["Hvala na pomoći","Danke für die Hilfe"],
+ ["Lijepo vrijeme","Schönes Wetter"],
+ ["Vruće je","Es ist heiß"],
+ ["Divno je ovdje","Es ist wunderschön hier"],
+ ["Volim Hrvatsku","Ich liebe Kroatien"],
+ ["Dolazimo svake godine","Wir kommen jedes Jahr"],
+ ["Jako sam gladan / gladna","Ich bin sehr hungrig"],
+ ["Žedan sam / žedna sam","Ich habe Durst"],
+ ["Dobro došli","Willkommen"],
+ ["Vidimo se sutra","Wir sehen uns morgen"],
+ ["Sretan put!","Gute Reise!"],
+ ["Sve najbolje","Alles Gute"]
+]}
+];
+
+const DIALOGS = [
+{ id:'d1', icon:'🍅', title:'Am Gemüsestand', other:'Verkäuferin', lines:[
+ ['V','Dobar dan! Izvolite.','Guten Tag! Bitte sehr.'],
+ ['I','Dobar dan! Imate li domaće rajčice?','Guten Tag! Haben Sie Tomaten aus eigenem Anbau?'],
+ ['V','Imam. Svježe su, jutros ubrane.','Ja. Sie sind frisch, heute Morgen gepflückt.'],
+ ['I','Koliko koštaju?','Wie viel kosten sie?'],
+ ['V','Četiri eura kilogram.','Vier Euro das Kilo.'],
+ ['I','Dajte mi kilogram, molim.','Geben Sie mir bitte ein Kilo.'],
+ ['V','Još nešto?','Noch etwas?'],
+ ['I','Da, vezicu peršina i glavicu češnjaka.','Ja, einen Bund Petersilie und eine Knoblauchknolle.'],
+ ['V','Izvolite. To je pet eura i pedeset centi.','Bitte sehr. Das macht fünf Euro fünfzig.'],
+ ['I','Izvolite. Hvala lijepa!','Bitte sehr. Vielen Dank!'],
+ ['V','Hvala vama. Doviđenja!','Ich danke Ihnen. Auf Wiedersehen!']
+]},
+{ id:'d2', icon:'🐟', title:'Am Fischstand', other:'Fischhändler', lines:[
+ ['I','Dobar dan! Koju ribu imate danas?','Guten Tag! Welchen Fisch haben Sie heute?'],
+ ['V','Imamo brancina, oradu i svježe lignje.','Wir haben Wolfsbarsch, Dorade und frische Kalmare.'],
+ ['I','Je li brancin svjež?','Ist der Wolfsbarsch frisch?'],
+ ['V','Naravno, jutros ulovljen.','Natürlich, heute Morgen gefangen.'],
+ ['I','Želio bih dva brancina. Koliko koštaju?','Ich möchte zwei Wolfsbarsche. Wie viel kosten sie?'],
+ ['V','Trideset eura po kilogramu.','Dreißig Euro pro Kilo.'],
+ ['I','Možete li ih očistiti, molim?','Können Sie sie bitte ausnehmen?'],
+ ['V','Naravno. Za žar ili za pećnicu?','Natürlich. Für den Grill oder für den Ofen?'],
+ ['I','Za žar. Što preporučujete uz ribu?','Für den Grill. Was empfehlen Sie dazu?'],
+ ['V','Blitvu s krumpirom i dobro maslinovo ulje.','Mangold mit Kartoffeln und gutes Olivenöl.'],
+ ['I','Odlično! Hvala!','Ausgezeichnet! Danke!']
+]},
+{ id:'d3', icon:'🛒', title:'Im Supermarkt', other:'Mitarbeiterin', lines:[
+ ['I','Oprostite, gdje je maslinovo ulje?','Entschuldigung, wo ist das Olivenöl?'],
+ ['V','U trećem redu, lijevo.','In der dritten Reihe, links.'],
+ ['I','Hvala. A gdje su jaja?','Danke. Und wo sind die Eier?'],
+ ['V','Tamo, kod mlijeka.','Dort, bei der Milch.'],
+ ['V','Želite li vrećicu?','Möchten Sie eine Tüte? (an der Kasse)'],
+ ['I','Da, molim.','Ja, bitte.'],
+ ['V','Plaćate li karticom ili gotovinom?','Zahlen Sie mit Karte oder bar?'],
+ ['I','Karticom.','Mit Karte.'],
+ ['V','Izvolite račun. Doviđenja!','Hier ist Ihr Kassenbon. Auf Wiedersehen!'],
+ ['I','Doviđenja, hvala!','Auf Wiedersehen, danke!']
+]},
+{ id:'d4', icon:'🍷', title:'In der Konoba', other:'Kellner', lines:[
+ ['I','Dobra večer! Stol za dvoje, molim.','Guten Abend! Einen Tisch für zwei, bitte.'],
+ ['V','Izvolite ovamo. Evo jelovnika.','Kommen Sie bitte hierher. Hier ist die Speisekarte.'],
+ ['I','Što je specijalitet kuće?','Was ist die Spezialität des Hauses?'],
+ ['V','Preporučujem janjetinu ispod peke ili brudet.','Ich empfehle Lamm unter der Eisenglocke oder Brudet.'],
+ ['I','Janjetinu ispod peke, molim, i čašu crnog vina.','Das Lamm unter der Glocke, bitte, und ein Glas Rotwein.'],
+ ['V','Odlično. Želite li vodu?','Ausgezeichnet. Möchten Sie Wasser?'],
+ ['I','Da, negaziranu, molim.','Ja, stilles, bitte.'],
+ ['I','Bilo je odlično! Račun, molim.','Es war ausgezeichnet! Die Rechnung, bitte.'],
+ ['V','Odmah.','Sofort.']
+]},
+{ id:'d5', icon:'☎️', title:'Tisch telefonisch reservieren', other:'Mitarbeiter am Telefon', lines:[
+ ['V','Konoba, izvolite.','Konoba, bitte?'],
+ ['I','Dobar dan! Želio bih rezervirati stol za četiri osobe.','Guten Tag! Ich möchte einen Tisch für vier Personen reservieren.'],
+ ['V','Za koji dan i u koliko sati?','Für welchen Tag und um wie viel Uhr?'],
+ ['I','Za subotu u osam navečer.','Für Samstag um acht Uhr abends.'],
+ ['V','Na koje ime?','Auf welchen Namen?'],
+ ['I','Na ime Weber.','Auf den Namen Weber.'],
+ ['V','Dogovoreno. Vidimo se u subotu.','Abgemacht. Bis Samstag.'],
+ ['I','Hvala. Doviđenja!','Danke. Auf Wiedersehen!']
+]},
+{ id:'d6', icon:'🍽️', title:'Bestellen und nachfragen', other:'Kellner', lines:[
+ ['I','Oprostite, što je u brudetu?','Entschuldigung, was ist im Brudet?'],
+ ['V','Riba, rajčica, bijelo vino i češnjak. Poslužuje se uz palentu.','Fisch, Tomaten, Weißwein und Knoblauch. Dazu gibt es Polenta.'],
+ ['I','Je li ljuto?','Ist es scharf?'],
+ ['V','Ne, nije ljuto.','Nein, es ist nicht scharf.'],
+ ['I','Imate li nešto bez mesa?','Haben Sie etwas ohne Fleisch?'],
+ ['V','Imamo rižot od povrća i salatu.','Wir haben Gemüserisotto und Salat.'],
+ ['I','Ja ću brudet, a supruga rižot.','Ich nehme den Brudet und meine Frau das Risotto.'],
+ ['V','Što ćete piti?','Was möchten Sie trinken?'],
+ ['I','Bocu bijelog vina i vodu, molim.','Eine Flasche Weißwein und Wasser, bitte.'],
+ ['V','Odmah.','Sofort.']
+]},
+{ id:'d7', icon:'🧾', title:'Falsche Bestellung und Bezahlen', other:'Kellnerin', lines:[
+ ['I','Oprostite, ovo nisam naručio.','Entschuldigung, das habe ich nicht bestellt.'],
+ ['V','Ispričavam se. Odmah ću to zamijeniti.','Ich entschuldige mich. Ich tausche es sofort um.'],
+ ['I','Hvala. Mogu li dobiti još kruha?','Danke. Kann ich noch Brot bekommen?'],
+ ['V','Naravno.','Natürlich.'],
+ ['I','Račun, molim.','Die Rechnung, bitte.'],
+ ['V','Zajedno ili odvojeno?','Zusammen oder getrennt?'],
+ ['I','Zajedno, molim. Primate li kartice?','Zusammen, bitte. Akzeptieren Sie Karten?'],
+ ['V','Primamo. Izvolite.','Ja. Bitte sehr.'],
+ ['I','Sve je bilo izvrsno. Ostatak je za vas.','Alles war ausgezeichnet. Der Rest ist für Sie.'],
+ ['V','Hvala lijepa! Doviđenja!','Vielen Dank! Auf Wiedersehen!']
+]},
+{ id:'d8', icon:'⛺', title:'Ankunft am Campingplatz', other:'Rezeptionist', lines:[
+ ['I','Dobar dan! Imamo rezervaciju na ime Weber.','Guten Tag! Wir haben auf den Namen Weber reserviert.'],
+ ['V','Dobar dan! Dobro došli. Putovnice ili osobne iskaznice, molim.','Guten Tag! Willkommen. Reisepässe oder Personalausweise, bitte.'],
+ ['I','Izvolite.','Bitte sehr.'],
+ ['V','Koliko noći ostajete?','Wie viele Nächte bleiben Sie?'],
+ ['I','Ostajemo sedam noći.','Wir bleiben sieben Nächte.'],
+ ['V','U redu. Imate mjesto broj četrdeset i dva, blizu mora.','In Ordnung. Sie haben Platz Nummer 42, nah am Meer.'],
+ ['I','Odlično! Gdje su sanitarije?','Ausgezeichnet! Wo sind die Sanitäranlagen?'],
+ ['V','Ravno, pa lijevo. Na svakom mjestu ima struje.','Geradeaus, dann links. Jeder Platz hat Strom.'],
+ ['I','Kada počinje noćni mir?','Wann beginnt die Nachtruhe?'],
+ ['V','Od dvadeset tri sata do sedam ujutro.','Von 23 Uhr bis 7 Uhr morgens.'],
+ ['I','Hvala lijepa.','Vielen Dank.'],
+ ['V','Ugodan boravak!','Angenehmen Aufenthalt!']
+]},
+{ id:'d9', icon:'🔧', title:'Fragen und Probleme im Camp', other:'Rezeptionistin', lines:[
+ ['I','Oprostite, nema tople vode u tušu.','Entschuldigung, es gibt kein warmes Wasser in der Dusche.'],
+ ['V','Žao mi je. Odmah ću poslati nekoga.','Es tut mir leid. Ich schicke sofort jemanden.'],
+ ['I','Hvala. Smijem li roštiljati na mjestu?','Danke. Darf ich auf dem Platz grillen?'],
+ ['V','Samo na označenom mjestu za roštilj.','Nur an der gekennzeichneten Grillstelle.'],
+ ['I','Gdje mogu kupiti ugljen?','Wo kann ich Holzkohle kaufen?'],
+ ['V','U trgovini kod recepcije.','Im Laden neben der Rezeption.'],
+ ['I','Imate li wifi?','Haben Sie WLAN?'],
+ ['V','Imamo. Lozinku dobijete na recepciji.','Ja. Das Passwort bekommen Sie an der Rezeption.'],
+ ['I','Gdje je kontejner za smeće?','Wo ist der Müllcontainer?'],
+ ['V','Pokraj ulaza, desno.','Neben dem Eingang, rechts.'],
+ ['I','Hvala na pomoći!','Danke für die Hilfe!']
+]},
+{ id:'d10', icon:'🚐', title:'Abreise vom Campingplatz', other:'Rezeptionist', lines:[
+ ['I','Dobro jutro! Do koliko sati moramo otići?','Guten Morgen! Bis wie viel Uhr müssen wir abreisen?'],
+ ['V','Do dvanaest sati.','Bis zwölf Uhr.'],
+ ['I','Možemo li platiti karticom?','Können wir mit Karte zahlen?'],
+ ['V','Naravno. Ukupno je sto osamdeset eura s turističkom pristojbom.','Natürlich. Insgesamt 180 Euro inklusive Kurtaxe.'],
+ ['I','Izvolite. Bilo je prekrasno!','Bitte sehr. Es war wunderschön!'],
+ ['V','Hvala! Vidimo se iduće godine!','Danke! Bis nächstes Jahr!'],
+ ['I','Sigurno! Doviđenja!','Sicher! Auf Wiedersehen!']
+]},
+{ id:'d11', icon:'⛴️', title:'Ausflug buchen: Zahlen, Tage, Uhrzeit', other:'Verkäufer am Hafen', lines:[
+ ['I','Dobar dan! Kada polazi brod za otok?','Guten Tag! Wann fährt das Boot zur Insel?'],
+ ['V','Svaki dan u devet i u petnaest sati.','Jeden Tag um 9 und um 15 Uhr.'],
+ ['I','Koliko košta karta?','Wie viel kostet eine Fahrkarte?'],
+ ['V','Dvadeset eura za odrasle, deset za djecu.','20 Euro für Erwachsene, 10 für Kinder.'],
+ ['I','Dvije karte za odrasle, za petak, u devet sati.','Zwei Karten für Erwachsene, für Freitag, um 9 Uhr.'],
+ ['V','Ukupno je četrdeset eura.','Insgesamt sind es 40 Euro.'],
+ ['I','Izvolite. Kada se vraća brod?','Bitte sehr. Wann kommt das Boot zurück?'],
+ ['V','U šesnaest sati.','Um 16 Uhr.'],
+ ['I','Hvala!','Danke!'],
+ ['V','Ugodan izlet!','Schönen Ausflug!']
+]},
+{ id:'d12', icon:'🥑', title:'Keto im Restaurant', other:'Kellner', lines:[
+ ['I','Dobra večer! Držim se keto prehrane, dakle bez ugljikohidrata. Što preporučujete?','Guten Abend! Ich esse keto, also ohne Kohlenhydrate. Was empfehlen Sie?'],
+ ['V','Imamo ribu na žaru, janjetinu i salatu od hobotnice.','Wir haben gegrillten Fisch, Lamm und Oktopussalat.'],
+ ['I','Ribu na žaru, molim. Može li bez krumpira?','Den gegrillten Fisch, bitte. Geht es ohne Kartoffeln?'],
+ ['V','Naravno. Želite li blitvu ili salatu?','Natürlich. Möchten Sie Mangold oder Salat?'],
+ ['I','Blitvu bez krumpira, molim.','Mangold ohne Kartoffeln, bitte.'],
+ ['V','Izvolite. Još nešto?','Gern. Noch etwas?'],
+ ['I','Mogu li dobiti dodatno maslinovo ulje?','Kann ich extra Olivenöl bekommen?'],
+ ['V','Naravno. Želite li desert?','Natürlich. Möchten Sie eine Nachspeise?'],
+ ['I','Samo kavu s vrhnjem, bez šećera.','Nur einen Kaffee mit Sahne, ohne Zucker.']
+]},
+{ id:'d13', icon:'🧀', title:'Keto einkaufen', other:'Verkäuferin', lines:[
+ ['I','Dobar dan! Imate li paški sir?','Guten Tag! Haben Sie Pager Käse?'],
+ ['V','Imamo. Želite li ga probati?','Ja. Möchten Sie ihn probieren?'],
+ ['I','Da, hvala. Dajte mi dvadeset deka sira i deset deka pršuta.','Ja, danke. Geben Sie mir 200 Gramm Käse und 100 Gramm Schinken.'],
+ ['V','Izvolite. Još nešto?','Bitte sehr. Noch etwas?'],
+ ['I','Imate li avokado, jaja i grčki jogurt?','Haben Sie Avocado, Eier und griechischen Joghurt?'],
+ ['V','Avokado i jaja da. Jogurt je tamo, uz mlijeko.','Avocado und Eier ja. Der Joghurt ist dort, bei der Milch.'],
+ ['I','Ima li šećera u ovom jogurtu?','Ist in diesem Joghurt Zucker?'],
+ ['V','Pogledajte etiketu. Ovaj je bez šećera.','Schauen Sie auf das Etikett. Dieser ist ohne Zucker.'],
+ ['I','Odlično, hvala!','Ausgezeichnet, danke!']
+]},
+{ id:'d14', icon:'🌅', title:'Kennenlernen am Strand', other:'Nette Bekanntschaft', lines:[
+ ['I','Dobar dan! Je li ovdje slobodno?','Guten Tag! Ist hier frei?'],
+ ['V','Slobodno je. Izvolite.','Hier ist frei. Bitte sehr.'],
+ ['I','Hvala. Zovem se Thomas. Kako se ti zoveš?','Danke. Ich heiße Thomas. Und wie heißt du?'],
+ ['V','Drago mi je. Ja sam Marija.','Freut mich. Ich bin Marija.'],
+ ['I','Jesi li odavde?','Bist du von hier?'],
+ ['V','Jesam, iz Splita. A ti? Odakle si?','Ja, aus Split. Und du? Woher kommst du?'],
+ ['I','Dolazim iz Njemačke. Na odmoru sam.','Ich komme aus Deutschland. Ich bin im Urlaub.'],
+ ['V','Kako ti se sviđa Hrvatska?','Wie gefällt dir Kroatien?'],
+ ['I','Divno je ovdje! Volim more i hranu. I volim kuhati.','Es ist wunderschön hier! Ich liebe das Meer und das Essen. Und ich koche gern.'],
+ ['V','Stvarno? Što najradije kuhaš?','Wirklich? Was kochst du am liebsten?'],
+ ['I','Ribu na žaru i pašticadu. Mogu li te pozvati na kavu?','Fisch vom Grill und Pašticada. Darf ich dich auf einen Kaffee einladen?'],
+ ['V','Rado! Hvala na pozivu.','Gern! Danke für die Einladung.']
+]},
+{ id:'d15', icon:'🍷', title:'Einladung zum Abendessen', other:'Nette Bekanntschaft', lines:[
+ ['I','Bilo mi je jako ugodno s tobom. Želiš li večerati sa mnom sutra?','Es war sehr angenehm mit dir. Möchtest du morgen mit mir zu Abend essen?'],
+ ['V','Rado! U koliko sati?','Gern! Um wie viel Uhr?'],
+ ['I','U osam navečer. Znam jednu dobru konobu uz more.','Um acht Uhr abends. Ich kenne eine gute Konoba am Meer.'],
+ ['V','Odlično. Volim ribu.','Ausgezeichnet. Ich mag Fisch.'],
+ ['I','Mogu li dobiti tvoj broj telefona?','Darf ich deine Telefonnummer haben?'],
+ ['V','Naravno. Evo.','Natürlich. Hier.'],
+ ['I','Vidimo se sutra!','Bis morgen!'],
+ ['V','Vidimo se. Laku noć!','Bis morgen. Gute Nacht!']
+]},
+{ id:'d16', icon:'🙋', title:'Höflich Nein sagen', other:'Aufdringliche Bekanntschaft', lines:[
+ ['V','Možemo li popiti nešto zajedno?','Können wir zusammen etwas trinken?'],
+ ['I','Hvala, ali nisam zainteresiran.','Danke, aber ich bin nicht interessiert. (Frau: zainteresirana)'],
+ ['V','Samo jedno piće?','Nur ein Getränk?'],
+ ['I','Ne, hvala. U vezi sam.','Nein, danke. Ich bin in einer Beziehung.'],
+ ['V','Još jednom, samo kratko?','Noch einmal, nur kurz?'],
+ ['I','Molim te, ostavi me na miru.','Bitte lass mich in Ruhe.'],
+ ['V','U redu. Oprostite.','In Ordnung. Entschuldigung.'],
+ ['I','Nema problema. Lijep dan!','Kein Problem. Schönen Tag noch!']
+]}
+];
+
+const ABC = [
+ ['c','„z“ wie in Zahn','cikla (Rote Bete)','ZI-kla'],
+ ['č','hartes „tsch“','češnjak (Knoblauch)','TSCHESCH-njak'],
+ ['ć','weiches „tj“','ćevapi','tje-WA-pi'],
+ ['š','„sch“','šunka (Schinken)','SCHUN-ka'],
+ ['ž','weiches „sch“ wie in Journal','žlica (Löffel)','SCHLI-tsa'],
+ ['đ','weiches „dj“','đuveč (Schmorgericht)','DJU-wetsch'],
+ ['dž','„dsch“','džem (Marmelade)','dschem'],
+ ['lj','wie „lj“ in Familie','ljuto (scharf)','LJU-to'],
+ ['nj','wie „gn“ in Cognac','njoki (Gnocchi)','NJO-ki'],
+ ['j','wie deutsches „j“','jaja (Eier)','JA-ja'],
+ ['v','„w“','vino (Wein)','WI-no'],
+ ['h','„ch“ oder „h“','hrana (Essen)','CHRA-na'],
+ ['z','weiches „s“ wie in Sonne','zrelo (reif)','SRE-lo'],
+ ['s','scharfes „s“ wie in Haus','sol (Salz)','sol'],
+ ['r','gerolltes Zungenspitzen-R','Hrvatska (Kroatien)','CHR-wat-ska']
+];
+
+/* ---------- Hilfsfunktionen ---------- */
+const ALL = CATS.flatMap(cat => cat.cards.map(c => ({cat, hr:c[0], de:c[1], pron:c[2]||'', note:c[3]||'', key:cat.id+'|'+c[0]})));
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const norm = s => s.toLowerCase().replace(/đ/g,'d').replace(/ß/g,'ss').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+const DAY_MS = 86400000;
+const today = () => { const d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset()*60000) / DAY_MS); };
+const INTERVALS = [1,3,7,16,35];
+const PLAN = ['zahlen','richtung','basis','markt','super','resto','gemuese','fisch','vorrat','koch','keto','spez','camp','kalender','farben','alltag','flirt'];
+let srs = {};
+try{ const raw = localStorage.getItem('hr-srs-v1'); const p = raw ? JSON.parse(raw) : {}; if(p && typeof p==='object') srs = p; }catch(e){ srs = {}; }
+function save(){ try{ localStorage.setItem('hr-srs-v1', JSON.stringify(srs)); }catch(e){} }
+try{
+  const old = localStorage.getItem('hr-known-v1');
+  if(old){ const p = JSON.parse(old); for(const k in p){ if(p[k] && !srs[k]) srs[k] = { b:1, d:today()+1 }; } save(); localStorage.removeItem('hr-known-v1'); }
+}catch(e){}
+const known = new Proxy({}, { get: (t, k) => !!srs[k] });
+function learn(c){
+  const t = today(), r = srs[c.key];
+  if(!r){ srs[c.key] = { b:1, d:t+INTERVALS[0] }; }
+  else if(r.d <= t){ r.b = Math.min(r.b+1, 5); r.d = t + INTERVALS[r.b-1]; }
+  save();
+}
+function lapse(c, dueNow){
+  const r = srs[c.key]; if(!r) return;
+  r.b = 1; r.d = today() + (dueNow ? 0 : 1); save();
+}
+function dueCards(){
+  const t = today();
+  return ALL.filter(c => srs[c.key] && srs[c.key].d <= t).sort((a,b) => srs[a.key].d - srs[b.key].d);
+}
+const PRIORITY = ['alltag|Žao mi je, nažalost ne razumijem hrvatski', 'alltag|Šalim se! Učim hrvatski', 'alltag|Ja sam Gerhard Veličanstveni i dolazim iz prekrasnog Melka u dolini Wachau u Austriji'];
+function newCards(n){
+  const ordered = PLAN.flatMap(id => ALL.filter(c => c.cat.id===id));
+  const first = PRIORITY.map(k => ordered.find(c => c.key===k)).filter(Boolean);
+  return [...first, ...ordered.filter(c => !PRIORITY.includes(c.key))].filter(c => !srs[c.key]).slice(0, n);
+}
+const catCards = id => ALL.filter(c => c.cat.id===id);
+const knownCount = list => list.filter(c => known[c.key]).length;
+
+/* ---------- Sprachausgabe ---------- */
+let hrVoice = null, warned = false;
+function loadVoices(){
+  try{
+    const vs = speechSynthesis.getVoices();
+    hrVoice = vs.find(v => /^hr/i.test(v.lang)) || vs.find(v => /^(bs|sr)/i.test(v.lang)) || null;
+  }catch(e){ hrVoice = null; }
+}
+if('speechSynthesis' in window){ loadVoices(); try{ speechSynthesis.addEventListener('voiceschanged', loadVoices); }catch(e){} }
+function makeUtt(text){
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'hr-HR';
+  u.rate = 0.85;
+  u.onerror = e => {
+    const err = e && e.error;
+    if(err && err!=='canceled' && err!=='interrupted'){ toast('Sprachausgabe nicht möglich (' + err + '). Bitte die Seite direkt in Chrome öffnen.'); }
+  };
+  return u;
+}
+function stopSpeech(){
+  try{ if(speechSynthesis.speaking || speechSynthesis.pending){ speechSynthesis.cancel(); } }catch(e){}
+}
+function speak(text){
+  if(!('speechSynthesis' in window)){ toast('In diesem Browser gibt es keine Sprachausgabe. Bitte die Seite direkt in Chrome öffnen.'); return; }
+  loadVoices();
+  let n = 0; try{ n = speechSynthesis.getVoices().length; }catch(e){}
+  if(n>0 && !hrVoice && !warned){ warned = true; toast('Keine kroatische Stimme gefunden. Die Aussprache kann ungenau sein.'); }
+  try{
+    stopSpeech(); speechSynthesis.resume();
+    setTimeout(() => { try{ speechSynthesis.speak(makeUtt(text)); }catch(e){} }, 80);
+  }catch(e){}
+}
+function speakAll(texts){
+  if(!('speechSynthesis' in window)) return;
+  try{
+    stopSpeech(); speechSynthesis.resume();
+    setTimeout(() => { try{ texts.forEach(t => speechSynthesis.speak(makeUtt(t))); }catch(e){} }, 80);
+  }catch(e){}
+}
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block';
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>{ t.style.display='none'; }, 5000);
+}
+
+/* ---------- Zustand ---------- */
+function loadNewN(){ try{ const v = parseInt(localStorage.getItem('hr-newn'), 10); if([5,10,15,20].includes(v)) return v; }catch(e){} return 5; }
+const S = { view:'home', catId:null, dir:'hr2de', session:null, quiz:null, dlgId:null, showDe:true, query:'', newN: loadNewN() };
+const app = document.getElementById('app');
+const nav = document.getElementById('nav');
+const dirLabel = d => d==='hr2de' ? 'Kroatisch zu Deutsch' : 'Deutsch zu Kroatisch';
+
+function go(view, scroll=true){ S.view = view; render(scroll); }
+
+function render(scroll=true){
+  const v = S.view;
+  const views = { home:viewHome, cat:viewCat, deck:viewDeck, quiz:viewQuiz, dialogs:viewDialogs, dialog:viewDialog, dict:viewDict, abc:viewAbc, auto:viewAuto };
+  app.innerHTML = views[v]();
+  const tab = {home:'home',cat:'home',deck:'home',quiz:'home',dialogs:'dialogs',dialog:'dialogs',dict:'dict',abc:'abc',auto:'home'}[v];
+  nav.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.nav===tab));
+  if(scroll) window.scrollTo(0,0);
+  if(v==='dict') bindDict();
+}
+
+function dirToggle(){
+  return `<div class="seg" role="group" aria-label="Lernrichtung">
+    <button data-action="dir" data-dir="hr2de" class="${S.dir==='hr2de'?'on':''}">Kroatisch zu Deutsch</button>
+    <button data-action="dir" data-dir="de2hr" class="${S.dir==='de2hr'?'on':''}">Deutsch zu Kroatisch</button></div>`;
+}
+function itemHtml(c, showCat){
+  return `<div class="item" role="button" tabindex="0" data-action="speak" data-text="${esc(c.hr)}">
+    <div><div class="hr">${esc(c.hr)}${known[c.key]?'<span class="tick" aria-label="gelernt">✓</span>':''}</div>
+    <div class="de">${esc(c.de)}</div>
+    ${c.pron?`<div class="pron">${esc(c.pron)}</div>`:''}
+    ${c.note?`<div class="note">${esc(c.note)}</div>`:''}
+    ${showCat?`<span class="chip">${c.cat.icon} ${esc(c.cat.title)}</span>`:''}</div>
+    <button class="speak" aria-label="Anhören">🔊</button></div>`;
+}
+
+/* ---------- Ansichten ---------- */
+function viewHome(){
+  const total = ALL.length, done = knownCount(ALL);
+  const t = today(), due = dueCards().length, left = newCards(1000).length;
+  let nextDay = null; for(const k in srs){ const d = srs[k].d; if(d>t && (nextDay===null || d<nextDay)) nextDay = d; }
+  const todayInfo = due>0 ? 'Fällige Karten zuerst, dann neue Karten.'
+    : nextDay===null ? `Fang heute mit ${S.newN} neuen Karten an.`
+    : `Heute ist nichts fällig. Nächste Wiederholung ${nextDay-t===1?'morgen':'in '+(nextDay-t)+' Tagen'}.`;
+  const topics = CATS.map(cat => {
+    const cs = catCards(cat.id), k = knownCount(cs);
+    return `<button class="topic" style="--c:${cat.color}" data-action="open-cat" data-id="${cat.id}">
+      <span class="ico">${cat.icon}</span>
+      <span class="tt"><b>${esc(cat.title)}</b><small>${cs.length} Karten, ${k} gelernt</small>
+      <i class="bar"><u style="width:${Math.round(100*k/cs.length)}%"></u></i></span></button>`;
+  }).join('');
+  return `<section class="hero">
+    <button class="hello" data-action="speak" data-text="Dobar dan" aria-label="Dobar dan anhören">Dobar dan!</button>
+    <div class="checker" aria-hidden="true"></div>
+    <p class="lede">Kroatisch für den Urlaub: Markt, Supermarkt, Küche und Smalltalk. Tippen Sie auf die Begrüßung, um sie zu hören.</p>
+  </section>
+  <div class="overall"><div class="progress-line"><span>Gelernt</span><span>${done} von ${total} Karten</span></div>
+  <i class="bar"><u style="width:${Math.round(100*done/total)}%"></u></i></div>
+  ${dirToggle()}
+  <h2 class="sec-title" style="margin-top:20px">Heute</h2>
+  <div class="row">
+    <button class="btn primary" data-action="review" ${due?'':'disabled'}>Wiederholen: ${due} fällig</button>
+    <button class="btn" data-action="new" ${left?'':'disabled'}>${S.newN} neue Karten</button>
+  </div>
+  <p class="small" style="margin:8px 0 0">${todayInfo} Gelernte Karten kommen nach 1, 3, 7, 16 und 35 Tagen wieder.</p>
+  <div class="small" style="margin-top:12px">Neue Karten pro Runde</div>
+  <div class="seg" style="margin-top:6px" role="group" aria-label="Neue Karten pro Runde">${[5,10,15,20].map(n => `<button data-action="newn" data-n="${n}" class="${S.newN===n?'on':''}">${n}</button>`).join('')}</div>
+  <div class="row" style="margin-top:12px">
+    <button class="btn" data-action="quiz-start" data-id="all">Quiz über alles</button>
+    <button class="btn" data-action="auto-open">🚗 Auto-Modus</button>
+  </div>
+  <h2 class="sec-title">Themen</h2>
+  <div class="topics">${topics}</div>`;
+}
+
+function viewCat(){
+  const cat = CATS.find(c => c.id===S.catId), cs = catCards(cat.id), k = knownCount(cs);
+  return `<button class="back" data-action="home">‹ Alle Themen</button>
+  <h2 style="font-size:34px">${cat.icon} ${esc(cat.title)}</h2>
+  <p class="small" style="margin:6px 0 0">${esc(cat.sub)}</p>
+  <div class="progress-line"><span>Gelernt</span><span>${k} von ${cs.length}</span></div>
+  <i class="bar"><u style="width:${Math.round(100*k/cs.length)}%"></u></i>
+  ${dirToggle()}
+  <div class="row" style="margin-top:12px">
+    <button class="btn primary" data-action="deck-start" data-id="${cat.id}">Karten lernen</button>
+    <button class="btn" data-action="quiz-start" data-id="${cat.id}">Quiz</button>
+  </div>
+  <div class="list">${cs.map(c => itemHtml(c,false)).join('')}</div>
+  <p style="margin-top:18px"><button class="btn" data-action="reset-cat" data-id="${cat.id}">Fortschritt dieses Themas zurücksetzen</button></p>`;
+}
+
+function viewDeck(){
+  const D = S.session;
+  if(D.done){
+    const isCat = !['review','new','mix'].includes(D.catId);
+    return `<button class="back" data-action="back-cat">‹ Zurück</button>
+    <p class="result-num">${D.total}</p>
+    <h2 style="font-size:30px">${D.catId==='review'?'Karten wiederholt':'Karten gelernt'}</h2>
+    <p class="small">${esc(D.title)}${D.again?`. ${D.again}× nochmal.`:''}${D.catId==='new'?' Sie kommen morgen zur ersten Wiederholung.':''}</p>
+    <div class="stack">
+      ${isCat?`<button class="btn primary" data-action="quiz-start" data-id="${D.catId}">Jetzt das Quiz machen</button>`:`<button class="btn primary" data-action="home">Zur Startseite</button>`}
+      ${isCat?`<button class="btn" data-action="deck-start" data-id="${D.catId}" data-all="1">Alles noch einmal durchgehen</button>`:''}
+      ${D.catId==='new' && newCards(1).length?`<button class="btn" data-action="new">Noch ${S.newN} neue Karten</button>`:''}
+    </div>`;
+  }
+  const c = D.cards[D.i], front = S.dir==='hr2de';
+  const frontText = front ? c.hr : c.de, backText = front ? c.de : c.hr;
+  const showSpeak = front || D.flipped;
+  return `<button class="back" data-action="back-cat">‹ Zurück</button>
+  <div class="progress-line"><span>${esc(D.title)}</span><span>${D.got} von ${D.total} gewusst</span></div>
+  <i class="bar"><u style="width:${Math.round(100*D.got/D.total)}%"></u></i>
+  <div class="flash" data-action="flip" role="button" tabindex="0" aria-label="Karte umdrehen">
+    <div class="top"><span class="tag">${front?'Kroatisch':'Deutsch'}</span>
+      ${showSpeak?`<button class="speak" data-action="speak" data-text="${esc(c.hr)}" aria-label="Anhören">🔊</button>`:''}</div>
+    <div class="main">${esc(frontText)}</div>
+    ${D.flipped?`<div class="back-side"><div class="ans">${esc(backText)}</div>
+      ${c.pron?`<div class="pron">Aussprache: ${esc(c.pron)}</div>`:''}
+      ${c.note?`<div class="note">${esc(c.note)}</div>`:''}</div>`:`<div class="hint">Tippen zum Umdrehen</div>`}
+  </div>
+  ${D.flipped?`<div class="two"><button class="btn again" data-action="again">Nochmal</button><button class="btn primary" data-action="got">Gewusst</button></div>`
+  :`<div class="stack"><button class="btn primary" data-action="flip">Umdrehen</button></div>`}`;
+}
+
+function viewQuiz(){
+  const Q = S.quiz;
+  if(Q.done){
+    return `<button class="back" data-action="${Q.catId==='all'?'home':'open-cat-back'}">‹ Zurück</button>
+    <p class="result-num">${Q.score} von ${Q.qs.length}</p>
+    <h2 style="font-size:30px">${Q.score===Q.qs.length?'Alles richtig':Q.score>=Q.qs.length*0.7?'Sehr gut':'Weiter üben'}</h2>
+    <p class="small">Falsch beantwortete, schon gelernte Karten kommen heute wieder in die Wiederholung.</p>
+    <div class="stack">
+      <button class="btn primary" data-action="quiz-start" data-id="${Q.catId}">Neues Quiz</button>
+      ${Q.catId!=='all'?`<button class="btn" data-action="deck-start" data-id="${Q.catId}">Karten lernen</button>`:''}
+    </div>`;
+  }
+  const q = Q.qs[Q.i], hr2de = Q.dir==='hr2de';
+  const prompt = hr2de ? q.c.hr : q.c.de;
+  const opts = q.opts.map((o, idx) => {
+    let cls = 'opt';
+    if(Q.answered!==null){ if(o===q.c) cls += ' right'; else if(idx===Q.answered) cls += ' wrong'; }
+    return `<button class="${cls}" data-action="answer" data-i="${idx}" ${Q.answered!==null?'disabled':''}>${esc(hr2de ? o.de : o.hr)}</button>`;
+  }).join('');
+  const last = Q.i === Q.qs.length-1;
+  return `<button class="back" data-action="${Q.catId==='all'?'home':'open-cat-back'}">‹ Quiz beenden</button>
+  <div class="progress-line"><span>Frage ${Q.i+1} von ${Q.qs.length}</span><span>${Q.score} richtig</span></div>
+  <div class="qprompt"><div class="main">${esc(prompt)}</div>
+    ${hr2de?`<button class="speak" data-action="speak" data-text="${esc(q.c.hr)}" aria-label="Anhören">🔊</button>`:''}</div>
+  <div class="opts">${opts}</div>
+  ${Q.answered!==null?`<div class="tip">${hr2de?'':`<b>${esc(q.c.hr)}</b><br>`}${q.c.pron?`Aussprache: ${esc(q.c.pron)}<br>`:''}${q.c.note?`<i>${esc(q.c.note)}</i>`:''}${(!q.c.pron && !q.c.note && hr2de)?esc(q.c.de):''}</div>
+  <div class="stack"><button class="btn primary" data-action="next">${last?'Ergebnis ansehen':'Weiter'}</button></div>`:''}`;
+}
+
+function viewDialogs(){
+  return `<h2 style="font-size:34px;margin-top:22px">Dialoge</h2>
+  <p class="small" style="margin:6px 0 14px">Typische Gespräche zum Mitlesen und Nachsprechen.</p>
+  <div class="topics">${DIALOGS.map(d => `<button class="topic" data-action="open-dlg" data-id="${d.id}">
+    <span class="ico">${d.icon}</span><span class="tt"><b>${esc(d.title)}</b><small>${d.lines.length} Sätze</small></span></button>`).join('')}</div>`;
+}
+function viewDialog(){
+  const d = DIALOGS.find(x => x.id===S.dlgId);
+  return `<button class="back" data-action="dialogs">‹ Alle Dialoge</button>
+  <h2 style="font-size:30px">${d.icon} ${esc(d.title)}</h2>
+  <div class="row" style="margin:12px 0">
+    <button class="btn primary" data-action="dlg-all">Alles vorlesen</button>
+    <button class="btn" data-action="dlg-stop">Stopp</button>
+    <button class="btn" data-action="dlg-de">Übersetzung ${S.showDe?'ausblenden':'einblenden'}</button>
+  </div>
+  <p class="small">Sie sprechen die blauen Zeilen. Gegenüber: ${esc(d.other)}.</p>
+  ${d.lines.map(l => `<div class="bubble ${l[0]==='I'?'i':'v'}">
+    <div><div class="hr">${esc(l[1])}</div>${S.showDe?`<div class="de">${esc(l[2])}</div>`:''}</div>
+    <button class="speak" data-action="speak" data-text="${esc(l[1])}" aria-label="Anhören">🔊</button></div>`).join('')}`;
+}
+
+function viewDict(){
+  return `<h2 style="font-size:34px;margin-top:22px">Suche</h2>
+  <p class="small" style="margin:6px 0 0">Deutsch oder Kroatisch eingeben. Die Sonderzeichen (č, š, ž) sind nicht nötig.</p>
+  <input id="q" class="search" type="search" placeholder="z. B. Tomate, riba, Salz" autocomplete="off" autocapitalize="off" value="${esc(S.query)}" aria-label="Suchbegriff">
+  <div class="list" id="results"></div>`;
+}
+function bindDict(){
+  const inp = document.getElementById('q');
+  inp.placeholder = 'z. B. Tomate, riba, Salz';
+  const upd = () => {
+    S.query = inp.value;
+    const q = norm(inp.value.trim());
+    const res = q ? ALL.filter(c => norm(c.hr).includes(q) || norm(c.de).includes(q)) : ALL;
+    const shown = res.slice(0, 60);
+    document.getElementById('results').innerHTML = shown.map(c => itemHtml(c,true)).join('')
+      + (res.length>60 ? `<p class="small">${res.length-60} weitere Treffer. Suchbegriff weiter eingrenzen.</p>` : '')
+      + (res.length===0 ? `<p class="small" style="margin-top:14px">Nichts gefunden. Probieren Sie ein anderes Wort oder eine kürzere Schreibweise.</p>` : '');
+  };
+  inp.addEventListener('input', upd); upd();
+}
+
+function viewAbc(){
+  loadVoices();
+  let nv = 0; try{ nv = speechSynthesis.getVoices().length; }catch(e){}
+  const status = !('speechSynthesis' in window) ? 'Dieser Browser bietet keine Sprachausgabe. Bitte die Seite direkt in Chrome öffnen, nicht in der Claude-App.'
+    : hrVoice ? `Kroatische Stimme gefunden (${esc(hrVoice.name)}). <br><button class="btn" style="margin-top:8px" data-action="speak" data-text="Dobar dan, dobro došli u Hrvatsku">Stimme testen</button>`
+    : nv===0 ? 'Der Browser meldet keine Stimmenliste. Das ist in der Claude-App üblich. Zum Testen die Seite direkt in Chrome öffnen. <br><button class="btn" style="margin-top:8px" data-action="speak" data-text="Dobar dan, dobro došli u Hrvatsku">Stimme testen</button>'
+    : 'Keine kroatische Stimme gefunden. In den Einstellungen unter Text-in-Sprache-Ausgabe lässt sich Kroatisch installieren. <br><button class="btn" style="margin-top:8px" data-action="speak" data-text="Dobar dan, dobro došli u Hrvatsku">Trotzdem testen</button>';
+  return `<h2 style="font-size:34px;margin-top:22px">Aussprache</h2>
+  <p class="small" style="margin:6px 0 0">Kroatisch wird fast genauso gesprochen, wie es geschrieben wird. Es gibt keine stummen Buchstaben.</p>
+  <div class="tip">${status}</div>
+  <div class="scroll-x"><table><thead><tr><th>Buchstabe</th><th>Klingt wie</th><th>Beispiel</th><th></th></tr></thead><tbody>
+  ${ABC.map(r => `<tr><td class="ch">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}<br><span class="small">${esc(r[3])}</span></td>
+    <td><button class="speak" data-action="speak" data-text="${esc(r[2].split(' (')[0])}" aria-label="Anhören">🔊</button></td></tr>`).join('')}
+  </tbody></table></div>
+  <h2 class="sec-title">Gut zu wissen</h2>
+  <div class="tip"><b>Betonung:</b> Sie liegt fast immer auf einer der vorderen Silben, nie auf der letzten (außer bei einsilbigen Wörtern).</div>
+  <div class="tip"><b>Siezen:</b> Im Laden, auf dem Markt und im Restaurant sagt man „vi“ (Sie). „Ti“ (du) ist für Freunde und Kinder.</div>
+  <div class="tip"><b>Männer und Frauen:</b> Männer sagen „Želio bih“, Frauen „Željela bih“. Ebenso „alergičan“ und „alergična“.</div>
+  <div class="tip"><b>Mengen:</b> Nach Mengen ändert sich das Wort: „kilogram rajčica“, „čaša vina“. Wer das nicht beachtet, wird trotzdem verstanden.</div>
+  <div class="tip"><b>Gewichte auf dem Markt:</b> „Deka“ sind 10 Gramm. „Dvadeset deka“ sind also 200 Gramm.</div>`;
+}
+
+/* ---------- Aktionen ---------- */
+function startDeck(catId, all){
+  let pool, title;
+  if(catId==='mix'){
+    const unknown = ALL.filter(c => !known[c.key]);
+    pool = shuffle(unknown.length>=10 ? unknown : ALL).slice(0,10); title = 'Tages-Mix';
+  }else{
+    const cs = catCards(catId); const unknown = cs.filter(c => !known[c.key]);
+    pool = shuffle((!all && unknown.length) ? unknown : cs); title = CATS.find(c => c.id===catId).title;
+  }
+  S.catId = catId==='mix' ? S.catId : catId;
+  S.session = { catId, title, cards:pool, i:0, total:pool.length, got:0, again:0, flipped:false, done:false };
+  go('deck');
+}
+function startSession(catId, title, pool){
+  S.session = { catId, title, cards:pool, i:0, total:pool.length, got:0, again:0, flipped:false, done:false };
+  go('deck');
+}
+function startReview(){ startSession('review', 'Wiederholung', shuffle(dueCards().slice(0, 30))); }
+function startNew(){ startSession('new', 'Neue Karten', newCards(S.newN)); }
+function startQuiz(catId){
+  const pool = catId==='all' ? ALL : catCards(catId);
+  const hr2de = S.dir==='hr2de';
+  const picked = shuffle(pool).slice(0, 10);
+  const qs = picked.map(c => {
+    const answerOf = x => hr2de ? x.de : x.hr;
+    let others = shuffle((pool.length>=4 ? pool : ALL).filter(x => x!==c && answerOf(x)!==answerOf(c)));
+    const seen = new Set([answerOf(c)]); const dist = [];
+    for(const x of others){ if(!seen.has(answerOf(x))){ seen.add(answerOf(x)); dist.push(x); } if(dist.length===3) break; }
+    return { c, opts: shuffle([c, ...dist]) };
+  });
+  S.catId = catId==='all' ? S.catId : catId;
+  S.quiz = { catId, qs, i:0, score:0, answered:null, dir:S.dir, done:false };
+  go('quiz');
+}
+
+/* ---------- Auto-Modus ---------- */
+const AUTO_KEY = 'hr-auto-v1';
+function loadAutoSettings(){
+  const d = { src:'due', mode:'listen', pause:4, rate:0.85, shuffle:true };
+  try{ const p = JSON.parse(localStorage.getItem(AUTO_KEY) || '{}'); if(p && typeof p==='object') return Object.assign(d, p); }catch(e){}
+  return d;
+}
+const A = { active:false, paused:false, token:0, idx:0, list:[], wake:null, errors:0, audio:null, settings:loadAutoSettings() };
+function saveAutoSettings(){ try{ localStorage.setItem(AUTO_KEY, JSON.stringify(A.settings)); }catch(e){} }
+function autoCards(src){
+  if(src==='due') return dueCards();
+  if(src==='known') return ALL.filter(c => srs[c.key]);
+  if(src==='all') return ALL.slice();
+  return catCards(src);
+}
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const speechText = t => t.replace(/…/g, ' ').replace(/\s*\/\s*/g, ', ');
+function say(text, lang, rate){
+  return new Promise(resolve => {
+    if(!('speechSynthesis' in window)){ A.errors = 99; resolve(); return; }
+    let done = false, timer;
+    const fin = () => { if(!done){ done = true; clearTimeout(timer); resolve(); } };
+    const u = new SpeechSynthesisUtterance(speechText(text));
+    u.lang = lang; u.rate = rate;
+    u.onend = () => { A.errors = 0; fin(); };
+    u.onerror = e => { if(e && e.error && e.error!=='canceled' && e.error!=='interrupted') A.errors++; fin(); };
+    timer = setTimeout(fin, 20000);
+    try{ speechSynthesis.speak(u); }catch(e){ A.errors++; fin(); }
+  });
+}
+async function waitMs(ms, token){
+  let left = ms;
+  while(left > 0 && token === A.token){ await sleep(100); left -= 100; }
+}
+async function runAuto(token){
+  while(token === A.token && A.active && !A.paused){
+    const c = A.list[A.idx];
+    updateAutoUI();
+    const s = A.settings, pm = s.pause * 1000;
+    const steps = s.mode==='quiz'
+      ? [ {t:c.de, l:'de-DE', p:pm*1.5}, {t:c.hr, l:'hr-HR', p:pm}, {t:c.hr, l:'hr-HR', p:600} ]
+      : [ {t:c.hr, l:'hr-HR', p:pm}, {t:c.de, l:'de-DE', p:pm*0.5}, {t:c.hr, l:'hr-HR', p:pm} ];
+    for(const st of steps){
+      if(token !== A.token) return;
+      await say(st.t, st.l, s.rate);
+      if(token !== A.token) return;
+      if(A.errors >= 3){ stopAuto(); toast('Die Sprachausgabe funktioniert nicht. Bitte die Seite direkt in Chrome öffnen und die Stimmen für Kroatisch und Deutsch installieren.'); return; }
+      await waitMs(st.p, token);
+    }
+    if(token !== A.token) return;
+    A.idx++;
+    if(A.idx >= A.list.length){ A.idx = 0; if(s.shuffle) A.list = shuffle(A.list); }
+  }
+}
+async function lockScreen(){
+  try{
+    if('wakeLock' in navigator){
+      A.wake = await navigator.wakeLock.request('screen');
+      A.wake.addEventListener('release', () => { A.wake = null; updateAutoUI(); });
+    }
+  }catch(e){ A.wake = null; }
+  updateAutoUI();
+}
+function unlockScreen(){ try{ if(A.wake){ A.wake.release(); } }catch(e){} A.wake = null; }
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState==='visible' && A.active && !A.paused && !A.wake) lockScreen();
+});
+function makeSilence(){
+  const sr = 8000, n = sr, buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+  const w = (o, s) => { for(let i=0;i<s.length;i++) v.setUint8(o+i, s.charCodeAt(i)); };
+  w(0,'RIFF'); v.setUint32(4,36+n,true); w(8,'WAVE'); w(12,'fmt '); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+  v.setUint32(24,sr,true); v.setUint32(28,sr,true); v.setUint16(32,1,true); v.setUint16(34,8,true); w(36,'data'); v.setUint32(40,n,true);
+  for(let i=0;i<n;i++) v.setUint8(44+i, 128);
+  return URL.createObjectURL(new Blob([buf], {type:'audio/wav'}));
+}
+function startKeepAlive(){
+  try{
+    if(!A.audio){ A.audio = new Audio(makeSilence()); A.audio.loop = true; }
+    const p = A.audio.play(); if(p && p.catch) p.catch(() => {});
+  }catch(e){}
+  try{
+    if('mediaSession' in navigator){
+      navigator.mediaSession.metadata = new MediaMetadata({ title:'Kroatisch Auto-Modus', artist:'Kroatisch für den Urlaub' });
+      navigator.mediaSession.setActionHandler('play', () => { if(A.paused) togglePause(); });
+      navigator.mediaSession.setActionHandler('pause', () => { if(!A.paused) togglePause(); });
+      navigator.mediaSession.setActionHandler('nexttrack', () => skipAuto(1));
+      navigator.mediaSession.setActionHandler('previoustrack', () => skipAuto(-1));
+      navigator.mediaSession.setActionHandler('stop', () => stopAuto());
+    }
+  }catch(e){}
+}
+function stopKeepAlive(){ try{ if(A.audio) A.audio.pause(); }catch(e){} }
+let REC = null, recWanted = false, recTest = false, lastCmd = '', lastCmdAt = 0, testTimer = null;
+const VOICE_CMDS = [
+  ['pause',  ['pause','pausieren','stopp','stop','halt','warte']],
+  ['repeat', ['nochmal','nochmals','noch mal','noch einmal','wiederholen','wiederhole','wieder holen']],
+  ['back',   ['zurück','zurückgehen','vorherige','vorheriger']],
+  ['next',   ['nächste','nächster','nächstes','überspringen','skip']],
+  ['go',     ['weiter','los','fortsetzen','weitermachen','start']],
+  ['slow',   ['langsamer']],
+  ['fast',   ['schneller']],
+  ['end',    ['beenden','ende','schluss']]
+];
+const VOICE_LABEL = { pause:'Pause', go:'Weiter', next:'Nächste Karte', back:'Zurück', repeat:'Nochmal', slow:'Langsamer', fast:'Schneller', end:'Beenden' };
+function lev(a, b){
+  const m = a.length, n = b.length; if(!m) return n; if(!n) return m;
+  let prev = Array.from({length:n+1}, (_, j) => j);
+  for(let i=1;i<=m;i++){
+    const cur = [i];
+    for(let j=1;j<=n;j++) cur[j] = Math.min(prev[j]+1, cur[j-1]+1, prev[j-1] + (a[i-1]===b[j-1] ? 0 : 1));
+    prev = cur;
+  }
+  return prev[n];
+}
+const vnorm = s => norm(String(s)).replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+function matchVoice(raw){
+  const t = vnorm(raw);
+  if(!t) return null;
+  const words = t.split(' ');
+  if(words.length > 4) return null;
+  const compact = words.join('');
+  for(const [cmd, list] of VOICE_CMDS){
+    for(const p0 of list){
+      const p = vnorm(p0), pc = p.replace(/ /g, '');
+      if(compact === pc || t === p || t.includes(' ' + p + ' ') || t.startsWith(p + ' ') || t.endsWith(' ' + p)) return cmd;
+      if(pc.length >= 6){
+        const tol = pc.length >= 9 ? 2 : 1;
+        if(lev(compact, pc) <= tol) return cmd;
+        if(words.some(w => w.length >= 5 && lev(w, pc) <= tol)) return cmd;
+      }
+    }
+  }
+  return null;
+}
+function voiceMsg(text){
+  ['a-voice','v-test'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = text; });
+}
+function runVoiceCmd(cmd){
+  let msg = VOICE_LABEL[cmd] || null;
+  if(cmd==='pause'){ if(!A.paused) togglePause(); }
+  else if(cmd==='go'){ if(A.paused){ togglePause(); msg = 'Weiter'; } else { skipAuto(1); msg = 'Nächste Karte'; } }
+  else if(cmd==='next'){ skipAuto(1); }
+  else if(cmd==='back'){ skipAuto(-1); }
+  else if(cmd==='repeat'){ if(A.paused) togglePause(); else skipAuto(0); }
+  else if(cmd==='slow' || cmd==='fast'){
+    const rates = [0.7, 0.85, 1]; let i = rates.indexOf(A.settings.rate); if(i < 0) i = 1;
+    i = Math.max(0, Math.min(2, i + (cmd==='slow' ? -1 : 1)));
+    A.settings.rate = rates[i]; saveAutoSettings();
+  }
+  else if(cmd==='end'){ stopAuto(); }
+  return msg;
+}
+function handleVoice(raw){
+  const cmd = matchVoice(raw);
+  voiceMsg('🎤 Gehört: „' + raw + '“' + (cmd ? ' → ' + VOICE_LABEL[cmd] : ''));
+  if(!cmd) return;
+  const now = Date.now();
+  if(cmd === lastCmd && now - lastCmdAt < 2500) return;
+  lastCmd = cmd; lastCmdAt = now;
+  if(recTest){ voiceMsg('🎤 Erkannt: „' + raw + '“ → ' + VOICE_LABEL[cmd] + '. Das funktioniert.'); return; }
+  if(!A.active) return;
+  runVoiceCmd(cmd);
+}
+function startVoice(test){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ voiceMsg('🎤 Dieser Browser unterstützt keine Spracherkennung. Bitte Chrome verwenden.'); toast('Spracherkennung wird in diesem Browser nicht unterstützt. Bitte Chrome verwenden.'); return false; }
+  stopVoice();
+  recTest = !!test;
+  try{
+    REC = new SR();
+    REC.lang = 'de-DE'; REC.continuous = false; REC.interimResults = true; REC.maxAlternatives = 3;
+    REC.onstart = () => voiceMsg('🎤 Mikrofon ist an. Sag zum Beispiel „nochmal“.');
+    REC.onresult = ev => {
+      for(let i = ev.resultIndex; i < ev.results.length; i++){
+        const r = ev.results[i];
+        let used = false;
+        for(let k = 0; k < r.length; k++){ if(matchVoice(r[k].transcript)){ handleVoice(r[k].transcript); used = true; break; } }
+        if(!used) handleVoice(r[0].transcript);
+      }
+    };
+    REC.onend = () => { if(recWanted){ setTimeout(() => { if(recWanted){ try{ REC.start(); }catch(e){} } }, 250); } };
+    REC.onerror = e => {
+      const code = e && e.error;
+      if(code==='not-allowed' || code==='service-not-allowed'){ recWanted = false; voiceMsg('🎤 Mikrofon nicht erlaubt. In den Chrome-Einstellungen unter Website-Einstellungen das Mikrofon erlauben.'); toast('Mikrofon nicht erlaubt.'); }
+      else if(code==='audio-capture'){ voiceMsg('🎤 Kein Mikrofon gefunden oder es wird gerade von einer anderen App benutzt.'); }
+      else if(code && code!=='no-speech' && code!=='aborted'){ voiceMsg('🎤 Fehler: ' + code); }
+    };
+    recWanted = true; REC.start();
+    if(test){ clearTimeout(testTimer); testTimer = setTimeout(() => { stopVoice(); voiceMsg('🎤 Test beendet.'); }, 30000); }
+    return true;
+  }catch(e){ recWanted = false; voiceMsg('🎤 Die Spracherkennung konnte nicht gestartet werden.'); return false; }
+}
+function stopVoice(){
+  recWanted = false; recTest = false; clearTimeout(testTimer);
+  try{ if(REC){ REC.onend = null; REC.stop(); } }catch(e){}
+  REC = null;
+}
+async function startAuto(){
+  if(!('speechSynthesis' in window)){ toast('In diesem Browser gibt es keine Sprachausgabe. Bitte die Seite direkt in Chrome öffnen.'); return; }
+  let list = autoCards(A.settings.src);
+  if(!list.length){ toast('In dieser Auswahl gibt es keine Karten. Wähle ein anderes Thema.'); return; }
+  if(A.settings.shuffle) list = shuffle(list);
+  A.list = list; A.idx = 0; A.active = true; A.paused = false; A.errors = 0; A.token++;
+  const tk = A.token;
+  render();
+  startKeepAlive();
+  if(A.settings.voice) startVoice();
+  lockScreen();
+  runAuto(tk);
+}
+function togglePause(){
+  if(!A.active) return;
+  A.token++;
+  try{ speechSynthesis.cancel(); }catch(e){}
+  if(A.paused){ A.paused = false; lockScreen(); const tk = A.token; setTimeout(() => runAuto(tk), 200); }
+  else { A.paused = true; }
+  updateAutoUI();
+}
+function skipAuto(d){
+  if(!A.active) return;
+  A.token++;
+  try{ speechSynthesis.cancel(); }catch(e){}
+  A.idx = (A.idx + d + A.list.length) % A.list.length;
+  updateAutoUI();
+  if(!A.paused){ const tk = A.token; setTimeout(() => runAuto(tk), 250); }
+}
+function stopAuto(silent){
+  const was = A.active;
+  A.active = false; A.paused = false; A.token++;
+  try{ speechSynthesis.cancel(); }catch(e){}
+  unlockScreen(); stopKeepAlive(); stopVoice();
+  if(was && !silent) render();
+}
+function updateAutoUI(){
+  const c = A.list[A.idx]; if(!c) return;
+  const set = (id, t) => { const el = document.getElementById(id); if(el) el.textContent = t; };
+  set('a-hr', c.hr); set('a-de', c.de);
+  set('a-count', 'Karte ' + (A.idx+1) + ' von ' + A.list.length);
+  set('a-pause', A.paused ? 'Weiter' : 'Pause');
+  set('a-lock', A.wake ? 'Bildschirm bleibt an' : 'Bildschirm bitte anlassen');
+  try{ if('mediaSession' in navigator) navigator.mediaSession.playbackState = A.paused ? 'paused' : 'playing'; }catch(e){}
+}
+function viewAuto(){
+  if(A.active){
+    const c = A.list[A.idx];
+    return `<button class="back" data-action="auto-stop">‹ Beenden</button>
+    <h2 style="font-size:30px">🚗 Auto-Modus</h2>
+    <div class="progress-line"><span id="a-count">Karte ${A.idx+1} von ${A.list.length}</span><span id="a-lock">${A.wake?'Bildschirm bleibt an':'Bildschirm bitte anlassen'}</span></div>
+    <div class="flash" style="cursor:default">
+      <div class="main" id="a-hr">${esc(c.hr)}</div>
+      <div class="back-side"><div class="ans" id="a-de">${esc(c.de)}</div></div>
+    </div>
+    <div class="stack">
+      <button class="btn primary big" id="a-pause" data-action="auto-pause">${A.paused?'Weiter':'Pause'}</button>
+      ${A.settings.voice?'<p class="small" id="a-voice" style="margin:0">🎤 Sag: weiter, zurück, pause, nochmal, langsamer, beenden</p>':''}
+      <div class="two" style="margin-top:0">
+        <button class="btn big" data-action="auto-prev">Zurück</button>
+        <button class="btn big" data-action="auto-next">Nächste</button>
+      </div>
+    </div>`;
+  }
+  const s = A.settings;
+  const srcOpts = [['due','Fällige Karten (Wiederholung)'],['known','Alle schon gelernten Karten'],['all','Alle Karten gemischt']].concat(CATS.map(c => [c.id, c.icon + ' ' + c.title]));
+  const opt = (arr, cur) => arr.map(a => `<option value="${esc(a[0])}" ${String(cur)===String(a[0])?'selected':''}>${esc(a[1])}</option>`).join('');
+  const n = autoCards(s.src).length;
+  return `<button class="back" data-action="home">‹ Zurück</button>
+  <h2 style="font-size:34px">🚗 Auto-Modus</h2>
+  <div class="tip"><b>Wichtig:</b> Stell alles im Stand ein und starte vor der Fahrt. Bedien das Handy nicht beim Fahren. Am besten hängt es am Ladekabel.</div>
+  <label class="field"><span>Was soll vorgelesen werden?</span><select data-auto="src">${opt(srcOpts, s.src)}</select></label>
+  <p class="small" style="margin:6px 0 0">${n} Karten in dieser Auswahl.</p>
+  <label class="field"><span>Ablauf</span><select data-auto="mode">${opt([['listen','Hören: Kroatisch, Deutsch, Kroatisch'],['quiz','Abfragen: Deutsch, Pause zum Antworten, Kroatisch']], s.mode)}</select></label>
+  <label class="field"><span>Pausen zum Nachsprechen</span><select data-auto="pause">${opt([[2,'Kurz (2 Sekunden)'],[4,'Mittel (4 Sekunden)'],[6,'Lang (6 Sekunden)']], s.pause)}</select></label>
+  <label class="field"><span>Sprechtempo</span><select data-auto="rate">${opt([[0.7,'Langsam'],[0.85,'Normal'],[1,'Schnell']], s.rate)}</select></label>
+  <label class="check"><input type="checkbox" data-auto="shuffle" ${s.shuffle?'checked':''}> Zufällige Reihenfolge</label>
+  <label class="check"><input type="checkbox" data-auto="voice" ${s.voice?'checked':''}> Sprachsteuerung per Mikrofon (weiter, zurück, pause …)</label>
+  <p class="small" style="margin:0">Die Sprachsteuerung braucht Mikrofon-Erlaubnis und Internet. Auf manchen Handys piept sie beim Neustart oder macht die Musik leiser. Teste das vor der Fahrt.</p>
+  <div class="stack" style="margin-top:8px"><button class="btn" data-action="voice-test">🎤 Mikrofon testen (30 Sekunden)</button></div>
+  <p class="small" id="v-test" style="margin:6px 0 0"></p>
+  <div class="stack"><button class="btn primary big" data-action="auto-start">Start</button></div>
+  <p class="small" style="margin-top:14px">Das Zuhören ändert deinen Lernfortschritt nicht. Du brauchst auf dem Handy eine kroatische und eine deutsche Stimme. Am zuverlässigsten läuft es direkt in Chrome und mit eingeschaltetem Bildschirm.</p>`;
+}
+app.addEventListener('change', e => {
+  const el = e.target.closest('[data-auto]'); if(!el) return;
+  const k = el.dataset.auto;
+  if(k==='shuffle' || k==='voice') A.settings[k] = el.checked;
+  else if(k==='pause' || k==='rate') A.settings[k] = parseFloat(el.value);
+  else A.settings[k] = el.value;
+  saveAutoSettings();
+  if(k==='src') render(false);
+});
+
+const actions = {
+  speak: el => speak(el.dataset.text),
+  home: () => go('home'),
+  'open-cat': el => { S.catId = el.dataset.id; go('cat'); },
+  'open-cat-back': () => go('cat'),
+  'back-cat': () => { if(S.session && ['mix','review','new'].includes(S.session.catId)) go('home'); else go('cat'); },
+  dir: el => { S.dir = el.dataset.dir; render(false); },
+  mix: () => startDeck('mix'),
+  review: () => startReview(),
+  'auto-open': () => go('auto'),
+  'auto-start': () => startAuto(),
+  'auto-stop': () => stopAuto(),
+  'auto-pause': () => togglePause(),
+  'auto-next': () => skipAuto(1),
+  'auto-prev': () => skipAuto(-1),
+  'voice-test': () => { if(recWanted && recTest){ stopVoice(); voiceMsg('🎤 Test beendet.'); } else { startVoice(true); } },
+  new: () => startNew(),
+  newn: el => { S.newN = +el.dataset.n; try{ localStorage.setItem('hr-newn', String(S.newN)); }catch(e){} render(false); },
+  'deck-start': el => startDeck(el.dataset.id, !!el.dataset.all),
+  'quiz-start': el => startQuiz(el.dataset.id),
+  flip: () => { S.session.flipped = !S.session.flipped; render(false); },
+  again: () => {
+    const D = S.session, c = D.cards.splice(D.i,1)[0];
+    lapse(c, false); D.again++;
+    D.cards.splice(Math.min(D.i+3, D.cards.length), 0, c);
+    D.flipped = false; render(false);
+  },
+  got: () => {
+    const D = S.session, c = D.cards[D.i];
+    learn(c); D.got++; D.i++; D.flipped = false;
+    if(D.i >= D.cards.length) D.done = true;
+    render(true);
+  },
+  answer: el => {
+    const Q = S.quiz; if(Q.answered!==null) return;
+    const q = Q.qs[Q.i], idx = +el.dataset.i; Q.answered = idx;
+    if(q.opts[idx]===q.c){ Q.score++; } else { lapse(q.c, true); }
+    speak(q.c.hr); render(false);
+  },
+  next: () => {
+    const Q = S.quiz; Q.i++; Q.answered = null;
+    if(Q.i >= Q.qs.length) Q.done = true;
+    render(true);
+  },
+  'reset-cat': el => {
+    catCards(el.dataset.id).forEach(c => { delete srs[c.key]; }); save(); render(false);
+  },
+  dialogs: () => go('dialogs'),
+  'open-dlg': el => { S.dlgId = el.dataset.id; go('dialog'); },
+  'dlg-all': () => { const d = DIALOGS.find(x => x.id===S.dlgId); speakAll(d.lines.map(l => l[1])); },
+  'dlg-stop': () => { try{ speechSynthesis.cancel(); }catch(e){} },
+  'dlg-de': () => { S.showDe = !S.showDe; render(false); }
+};
+
+app.addEventListener('click', e => {
+  const el = e.target.closest('[data-action]');
+  if(!el || !app.contains(el)) return;
+  const fn = actions[el.dataset.action]; if(fn) fn(el, e);
+});
+app.addEventListener('keydown', e => {
+  if((e.key==='Enter' || e.key===' ') && e.target.matches('[role="button"]')){
+    e.preventDefault(); e.target.click();
+  }
+});
+nav.addEventListener('click', e => {
+  const b = e.target.closest('button[data-nav]'); if(!b) return;
+  stopAuto(true);
+  try{ speechSynthesis.cancel(); }catch(err){}
+  go(b.dataset.nav);
+});
+
+render();
+</script>
+</body>
+</html>
