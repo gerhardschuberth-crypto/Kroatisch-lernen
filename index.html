@@ -1089,6 +1089,32 @@ function warmUp(){
   try{ const w = new SpeechSynthesisUtterance('.'); applyVoice(w, 'hr-HR'); w.volume = 0; w.rate = 2; speechSynthesis.speak(w); }catch(e){}
   lastSpeechEnd = Date.now();
 }
+let primePromise = null;
+function primeSpeech(){
+  if(primePromise) return primePromise;
+  primePromise = new Promise(resolve => {
+    if(!('speechSynthesis' in window)){ resolve(); return; }
+    let done = false;
+    const fin = () => { if(!done){ done = true; lastSpeechEnd = Date.now(); resolve(); } };
+    const start = () => {
+      try{
+        loadVoices();
+        const w = new SpeechSynthesisUtterance('.'); applyVoice(w, 'hr-HR'); w.volume = 0; w.rate = 2;
+        w.onend = fin; w.onerror = fin;
+        speechSynthesis.speak(w);
+      }catch(e){ fin(); }
+      setTimeout(fin, 1500);
+    };
+    if(allVoices().length > 0){ start(); }
+    else {
+      let started = false;
+      const go = () => { if(!started){ started = true; start(); } };
+      try{ speechSynthesis.addEventListener('voiceschanged', go); }catch(e){}
+      setTimeout(go, 1200);
+    }
+  });
+  return primePromise;
+}
 function stopSpeech(){
   const had = speechPending > 0;
   if(had){ try{ speechSynthesis.cancel(); }catch(e){} }
@@ -1102,14 +1128,14 @@ function speak(text){
   try{
     const had = stopSpeech(); speechSynthesis.resume();
     const mySeq = ++speakSeq;
-    setTimeout(() => { if(mySeq !== speakSeq) return; try{ warmUp(); speechSynthesis.speak(makeUtt(text)); }catch(e){} }, had ? 300 : 60);
+    primeSpeech().then(() => setTimeout(() => { if(mySeq !== speakSeq) return; try{ warmUp(); speechSynthesis.speak(makeUtt(text)); }catch(e){} }, had ? 300 : 60));
   }catch(e){}
 }
 function speakAll(texts){
   if(!('speechSynthesis' in window)) return;
   try{
     const had = stopSpeech(); speechSynthesis.resume();
-    setTimeout(() => { try{ warmUp(); texts.forEach(t => speechSynthesis.speak(makeUtt(t))); }catch(e){} }, had ? 300 : 80);
+    primeSpeech().then(() => setTimeout(() => { try{ warmUp(); texts.forEach(t => speechSynthesis.speak(makeUtt(t))); }catch(e){} }, had ? 300 : 80));
   }catch(e){}
 }
 let toastTimer;
@@ -1129,9 +1155,9 @@ function go(view, scroll=true){ S.view = view; render(scroll); }
 
 function render(scroll=true){
   const v = S.view;
-  const views = { home:viewHome, cat:viewCat, deck:viewDeck, quiz:viewQuiz, dialogs:viewDialogs, dialog:viewDialog, dict:viewDict, abc:viewAbc, auto:viewAuto };
+  const views = { home:viewHome, cat:viewCat, deck:viewDeck, quiz:viewQuiz, dialogs:viewDialogs, dialog:viewDialog, dict:viewDict, abc:viewAbc, auto:viewAuto, sync:viewSync };
   app.innerHTML = views[v]();
-  const tab = {home:'home',cat:'home',deck:'home',quiz:'home',dialogs:'dialogs',dialog:'dialogs',dict:'dict',abc:'abc',auto:'home'}[v];
+  const tab = {home:'home',cat:'home',deck:'home',quiz:'home',dialogs:'dialogs',dialog:'dialogs',dict:'dict',abc:'abc',auto:'home',sync:'home'}[v];
   nav.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.nav===tab));
   if(scroll) window.scrollTo(0,0);
   if(v==='dict') bindDict();
@@ -1187,6 +1213,7 @@ function viewHome(){
     <button class="btn" data-action="quiz-start" data-id="all">Quiz über alles</button>
     <button class="btn" data-action="auto-open">🚗 Auto-Modus</button>
     <button class="btn" data-action="goabc">🔤 Aussprache & Stimme</button>
+    <button class="btn" data-action="sync-open">💾 Lernstand</button>
   </div>
   <h2 class="sec-title">Themen</h2>
   <div class="topics">${topics}</div>`;
@@ -1405,7 +1432,7 @@ function autoCards(src){
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const speechText = t => t.replace(/…/g, ' ').replace(/\s*\/\s*/g, ', ');
 function say(text, lang, rate){
-  return new Promise(resolve => {
+  return primeSpeech().then(() => new Promise(resolve => {
     if(!('speechSynthesis' in window)){ A.errors = 99; resolve(); return; }
     let done = false, timer;
     const fin = () => { if(!done){ done = true; clearTimeout(timer); resolve(); } };
@@ -1416,7 +1443,7 @@ function say(text, lang, rate){
     trackUtt(u);
     timer = setTimeout(fin, 20000);
     try{ warmUp(); speechSynthesis.speak(u); }catch(e){ A.errors++; fin(); }
-  });
+  }));
 }
 async function waitMs(ms, token){
   let left = ms;
@@ -1679,9 +1706,89 @@ app.addEventListener('change', e => {
   if(k==='src') render(false);
 });
 
+/* ---------- Lernstand exportieren / importieren ---------- */
+function hashKey(k){ let h = 0x811c9dc5; for(let i = 0; i < k.length; i++){ h ^= k.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(36); }
+function exportProgress(){
+  const s = [];
+  for(const k in srs){ const r = srs[k]; s.push(hashKey(k) + ',' + r.b + ',' + r.d); }
+  return 'HRLERN1:' + JSON.stringify({ n:S.newN, s });
+}
+function importProgress(text, replace){
+  const t = String(text).trim();
+  if(t.indexOf('HRLERN1:') !== 0) throw new Error('format');
+  const data = JSON.parse(t.slice(8));
+  if(!data || !Array.isArray(data.s)) throw new Error('format');
+  const byHash = {};
+  ALL.forEach(c => { byHash[hashKey(c.key)] = c.key; });
+  const incoming = {}; let skipped = 0;
+  for(const item of data.s){
+    const p = String(item).split(','), key = byHash[p[0]], b = parseInt(p[1], 10), d = parseInt(p[2], 10);
+    if(!key || !(b >= 1 && b <= 5) || isNaN(d)){ skipped++; continue; }
+    incoming[key] = { b, d };
+  }
+  if(replace) srs = {};
+  let added = 0, updated = 0;
+  for(const key in incoming){
+    const inc = incoming[key], cur = srs[key];
+    if(!cur){ srs[key] = inc; added++; }
+    else if(inc.b > cur.b || (inc.b === cur.b && inc.d > cur.d)){ srs[key] = inc; updated++; }
+  }
+  if(replace && [5,10,15,20].includes(data.n)){ S.newN = data.n; try{ localStorage.setItem('hr-newn', String(S.newN)); }catch(e){} }
+  save();
+  return { added, updated, skipped };
+}
+function syncMsg(t){ const el = document.getElementById('sync-msg'); if(el) el.textContent = t; }
+function doImport(replace){
+  const ta = document.getElementById('sync-in');
+  try{
+    const r = importProgress(ta ? ta.value : '', replace);
+    syncMsg('Fertig: ' + r.added + ' neue Karten, ' + r.updated + ' aktualisiert, ' + r.skipped + ' nicht erkannt.');
+    const out = document.getElementById('sync-out'); if(out) out.value = exportProgress();
+  }catch(e){ syncMsg('Das ist kein gültiger Lernstand. Bitte den ganzen Text einfügen, er beginnt mit HRLERN1:'); }
+}
+function viewSync(){
+  const text = exportProgress(), n = Object.keys(srs).length;
+  return `<button class="back" data-action="home">‹ Zurück</button>
+  <h2 style="font-size:34px">💾 Lernstand übertragen</h2>
+  <p class="small" style="margin:6px 0 0">Dein Lernstand steht nur in diesem Browser. Mit Export und Import nimmst du ihn auf ein anderes Gerät oder in einen anderen Browser mit. Aktuell gelernt: ${n} Karten.</p>
+  <h2 class="sec-title">1. Exportieren</h2>
+  <textarea id="sync-out" class="search" rows="4" readonly style="font-size:13px">${esc(text)}</textarea>
+  <div class="row" style="margin-top:10px"><button class="btn primary" data-action="sync-copy">Kopieren</button><button class="btn" data-action="sync-file">Als Datei speichern</button></div>
+  <h2 class="sec-title">2. Importieren</h2>
+  <textarea id="sync-in" class="search" rows="4" placeholder="Hier den kopierten Text einfügen" style="font-size:13px"></textarea>
+  <label class="field"><span>oder eine gespeicherte Datei wählen</span><input type="file" id="sync-file-in" accept=".txt,.json,text/plain" class="search" style="padding:10px"></label>
+  <div class="row" style="margin-top:10px"><button class="btn primary" data-action="sync-merge">Zusammenführen</button><button class="btn" data-action="sync-replace">Ersetzen</button></div>
+  <p class="small" id="sync-msg" style="margin-top:10px"></p>
+  <p class="small">Zusammenführen behält pro Karte den weiter fortgeschrittenen Stand und löscht nichts. Ersetzen löscht deinen aktuellen Stand und übernimmt den importierten.</p>`;
+}
+app.addEventListener('change', e => {
+  if(!e.target || e.target.id !== 'sync-file-in') return;
+  const f = e.target.files && e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = () => { const ta = document.getElementById('sync-in'); if(ta) ta.value = String(r.result || ''); syncMsg('Datei gelesen. Jetzt „Zusammenführen“ oder „Ersetzen“ drücken.'); };
+  r.readAsText(f);
+});
+
 const actions = {
   speak: el => speak(el.dataset.text),
   goabc: () => go('abc'),
+  'sync-open': () => go('sync'),
+  'sync-copy': () => {
+    const ta = document.getElementById('sync-out'); const t = ta ? ta.value : exportProgress();
+    const ok = () => syncMsg('Kopiert. Auf dem anderen Gerät bei „Importieren“ einfügen.');
+    const fallback = () => { try{ ta.select(); document.execCommand('copy'); ok(); }catch(e){ syncMsg('Kopieren hat nicht geklappt. Markiere den Text und kopiere ihn von Hand.'); } };
+    try{ navigator.clipboard.writeText(t).then(ok, fallback); }catch(e){ fallback(); }
+  },
+  'sync-file': () => {
+    try{
+      const b = new Blob([exportProgress()], { type:'text/plain' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'kroatisch-lernstand.txt';
+      document.body.appendChild(a); a.click(); a.remove();
+      syncMsg('Datei gespeichert, meist im Ordner Downloads.');
+    }catch(e){ syncMsg('Speichern hat nicht geklappt. Bitte stattdessen kopieren.'); }
+  },
+  'sync-merge': () => doImport(false),
+  'sync-replace': () => doImport(true),
   'voices-refresh': () => { loadVoices(); render(false); },
   home: () => go('home'),
   'open-cat': el => { S.catId = el.dataset.id; go('cat'); },
