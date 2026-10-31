@@ -608,6 +608,10 @@ const CATS = [
  ["gore","oben / hinauf"],["dolje","unten / hinunter"],
  ["ovdje","hier"],["tamo","dort"],["ovuda","hier entlang"],
  ["ispred","vor"],["iza","hinter"],["pored","neben"],["preko puta","gegenüber"],
+ ["naprijed","vorwärts / vorne"],["straga","hinten"],["natrag","zurück / rückwärts"],
+ ["unutra","drinnen"],["vani","draußen"],["između","zwischen"],["sredina","Mitte"],
+ ["s lijeve strane","auf der linken Seite"],["s desne strane","auf der rechten Seite"],
+ ["na uglu","an der Ecke"],["na kraju ulice","am Ende der Straße"],
  ["sjever","Norden"],["jug","Süden"],["istok","Osten"],["zapad","Westen"],
  ["Skrenite lijevo","Biegen Sie links ab"],
  ["Skrenite desno","Biegen Sie rechts ab"],
@@ -693,6 +697,60 @@ const CATS = [
  ["osmijeh","Lächeln"],
  ["zalazak sunca","Sonnenuntergang"],
  ["društvo","Gesellschaft"]
+]},
+{ id:'derb', icon:'🤬', title:'Fluchen & Beleidigen (derb)', color:'#7a1f1f', sub:'Zum Verstehen und für den Notfall', cards:[
+ ["Ne psuj!","Fluch nicht!","","Derbe Ausdrücke nur unter Bekannten oder allein im Auto. Gegenüber Fremden kann das Streit auslösen."],
+ ["Dovraga!","Zum Teufel! / Verdammt!"],
+ ["Idi dovraga!","Geh zum Teufel!"],
+ ["Prokletstvo!","Verdammt!"],
+ ["Sranje!","Scheiße!","","Derb."],
+ ["Jebote!","Verdammt! / Fuck!","","Sehr derb, aber extrem häufig als Ausruf bei Ärger oder Überraschung."],
+ ["Ma daj!","Ach komm! / Das gibt’s doch nicht!"],
+ ["Ne mogu vjerovati","Ich fasse es nicht"],
+ ["Dosta je!","Es reicht!"],
+ ["Dovraga, zagorjelo je!","Verdammt, es ist angebrannt!"],
+ ["Sranje, zaboravio sam sol","Scheiße, ich habe das Salz vergessen","","Frau: „zaboravila sam“"],
+ ["Jebote, ovo je vruće!","Verdammt, ist das heiß!"],
+ ["Pazi, idiote!","Pass auf, du Idiot!"],
+ ["Što radiš, budalo?","Was machst du, du Idiot?"],
+ ["Gledaj kamo voziš!","Schau, wohin du fährst!"],
+ ["Vozi normalno!","Fahr normal!"],
+ ["Jesi li normalan / normalna?","Spinnst du? / Bist du noch normal?"],
+ ["budala","Idiot / Dummkopf"],
+ ["glupan","Dummkopf"],
+ ["idiot","Idiot"],
+ ["magarac","Esel (Dummkopf)"],
+ ["seljak","Bauer / Rüpel"],
+ ["bezobraznik","Flegel / Rüpel"],
+ ["baraba","Schuft"],
+ ["svinja","Schwein"],
+ ["gad","Mistkerl","","Derb."],
+ ["seronja","Scheißkerl","","Sehr derb."],
+ ["govnar","Arsch / Scheißkerl","","Sehr derb."],
+ ["šupak","Arschloch","","Sehr derb."],
+ ["govno","Scheiße / Dreck","","Derb."],
+ ["dupe","Hintern / Po","","Salopp, nicht wirklich derb."],
+ ["kurac","Schwanz (derber Fluch)","","Extrem derb. Nur zum Verstehen."],
+ ["pička","Fotze (derber Fluch)","","Extrem derb. Nur zum Verstehen."],
+ ["Ti si budala","Du bist ein Idiot"],
+ ["Ti si gad","Du bist ein Mistkerl"],
+ ["Ti si seronja","Du bist ein Scheißkerl"],
+ ["Zatvori gubicu!","Halt die Schnauze!","","Derb."],
+ ["Začepi!","Halt den Mund!","","Unhöflich."],
+ ["Gubi se!","Verschwinde!"],
+ ["Odjebi!","Verpiss dich!","","Sehr derb."],
+ ["Jebi se!","Fick dich!","","Sehr derb. Kann Schlägereien auslösen."],
+ ["Smiri se","Beruhig dich"],
+ ["Ne razgovaraj tako sa mnom","Sprich nicht so mit mir"],
+ ["Nema potrebe za vrijeđanjem","Es gibt keinen Grund zu beleidigen"],
+ ["Sram te bilo!","Schäm dich!"],
+ ["Ostavi me na miru!","Lass mich in Ruhe!"],
+ ["Zvat ću policiju","Ich rufe die Polizei"],
+ ["psovati","fluchen"],
+ ["psovka","Fluch / Kraftausdruck"],
+ ["vrijeđati","beleidigen"],
+ ["uvreda","Beleidigung"],
+ ["ružna riječ","schlimmes Wort"]
 ]},
 { id:'alltag', icon:'🌊', title:'Unterwegs & Smalltalk', color:'#1a8f8f', sub:'Wegbeschreibung, Wetter, nette Worte', cards:[
  ["Žao mi je, nažalost ne razumijem hrvatski","Es tut mir leid, ich verstehe leider kein Kroatisch","SCHA-o mi je, na-SCHA-lost ne ra-SU-mi-jem CHR-wat-ski","Der Clou: völlig akzentfrei gesprochen wirkt der Satz überraschend und charmant."],
@@ -940,7 +998,7 @@ function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.fl
 const DAY_MS = 86400000;
 const today = () => { const d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset()*60000) / DAY_MS); };
 const INTERVALS = [1,3,7,16,35];
-const PLAN = ['zahlen','richtung','basis','markt','super','resto','gemuese','fisch','vorrat','koch','keto','spez','camp','kalender','farben','alltag','flirt'];
+const PLAN = ['zahlen','richtung','basis','markt','super','resto','gemuese','fisch','vorrat','koch','keto','spez','camp','kalender','farben','alltag','flirt','derb'];
 let srs = {};
 try{ const raw = localStorage.getItem('hr-srs-v1'); const p = raw ? JSON.parse(raw) : {}; if(p && typeof p==='object') srs = p; }catch(e){ srs = {}; }
 function save(){ try{ localStorage.setItem('hr-srs-v1', JSON.stringify(srs)); }catch(e){} }
@@ -963,27 +1021,45 @@ function dueCards(){
   const t = today();
   return ALL.filter(c => srs[c.key] && srs[c.key].d <= t).sort((a,b) => srs[a.key].d - srs[b.key].d);
 }
-const PRIORITY = ['alltag|Žao mi je, nažalost ne razumijem hrvatski', 'alltag|Šalim se! Učim hrvatski', 'alltag|Ja sam Gerhard Veličanstveni i dolazim iz prekrasnog Melka u dolini Wachau u Austriji'];
+const PRIORITY = [];
+const LATE = ['alltag|Žao mi je, nažalost ne razumijem hrvatski', 'alltag|Šalim se! Učim hrvatski', 'alltag|Ja sam Gerhard Veličanstveni i dolazim iz prekrasnog Melka u dolini Wachau u Austriji'];
 function newCards(n){
   const ordered = PLAN.flatMap(id => ALL.filter(c => c.cat.id===id));
   const first = PRIORITY.map(k => ordered.find(c => c.key===k)).filter(Boolean);
-  return [...first, ...ordered.filter(c => !PRIORITY.includes(c.key))].filter(c => !srs[c.key]).slice(0, n);
+  const late = LATE.map(k => ordered.find(c => c.key===k)).filter(Boolean);
+  return [...first, ...ordered.filter(c => !PRIORITY.includes(c.key) && !LATE.includes(c.key)), ...late].filter(c => !srs[c.key]).slice(0, n);
 }
 const catCards = id => ALL.filter(c => c.cat.id===id);
 const knownCount = list => list.filter(c => known[c.key]).length;
 
 /* ---------- Sprachausgabe ---------- */
 let hrVoice = null, warned = false;
-function loadVoices(){
-  try{
-    const vs = speechSynthesis.getVoices();
-    hrVoice = vs.find(v => /^hr/i.test(v.lang)) || vs.find(v => /^(bs|sr)/i.test(v.lang)) || null;
-  }catch(e){ hrVoice = null; }
+const isAndroid = /Android/i.test((typeof navigator !== 'undefined' && navigator.userAgent) || '');
+let voicePref = { hr:'' };
+try{ const p = JSON.parse(localStorage.getItem('hr-voice-v1') || '{}'); if(p && typeof p==='object') voicePref = Object.assign(voicePref, p); }catch(e){}
+function allVoices(){ try{ return speechSynthesis.getVoices() || []; }catch(e){ return []; } }
+function pickVoice(prefix){
+  const vs = allVoices(); if(!vs.length) return null;
+  if(prefix==='hr' && voicePref.hr){ const chosen = vs.find(x => x.name===voicePref.hr); if(chosen) return chosen; }
+  const re = new RegExp('^' + prefix + '([-_]|$)', 'i');
+  let v = vs.find(x => re.test(x.lang));
+  if(!v && prefix==='hr') v = vs.find(x => /^(bs|sr)([-_]|$)/i.test(x.lang));
+  return v || null;
 }
-if('speechSynthesis' in window){ loadVoices(); try{ speechSynthesis.addEventListener('voiceschanged', loadVoices); }catch(e){} }
+function applyVoice(u, lang){
+  const prefix = lang.slice(0, 2).toLowerCase();
+  const v = pickVoice(prefix);
+  u.lang = v ? v.lang : lang;
+  if(v && (!isAndroid || (prefix==='hr' && voicePref.hr))) u.voice = v;
+}
+function loadVoices(){ hrVoice = pickVoice('hr'); }
+if('speechSynthesis' in window){
+  loadVoices();
+  try{ speechSynthesis.addEventListener('voiceschanged', () => { loadVoices(); if(typeof S !== 'undefined' && S.view==='abc') render(false); }); }catch(e){}
+}
 function makeUtt(text){
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'hr-HR';
+  applyVoice(u, 'hr-HR');
   u.rate = 0.85;
   u.onerror = e => {
     const err = e && e.error;
@@ -1209,16 +1285,33 @@ function bindDict(){
   inp.addEventListener('input', upd); upd();
 }
 
+function voiceSection(){
+  if(!('speechSynthesis' in window)) return '<div class="tip">Dieser Browser bietet keine Sprachausgabe. Bitte Chrome oder Edge verwenden.</div>';
+  const vs = allVoices();
+  const rank = v => /^hr/i.test(v.lang) ? 0 : /^(bs|sr)/i.test(v.lang) ? 1 : 2;
+  const sorted = vs.slice().sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
+  const hrCount = vs.filter(v => /^hr/i.test(v.lang)).length;
+  const cur = pickVoice('hr');
+  const opts = ['<option value="">Automatisch</option>'].concat(sorted.map(v => `<option value="${esc(v.name)}" ${voicePref.hr===v.name?'selected':''}>${esc(v.name)} (${esc(v.lang)})</option>`)).join('');
+  const info = vs.length===0 ? 'Der Browser meldet noch keine Stimmen. Die Seite neu laden oder „Liste aktualisieren“ drücken.'
+    : hrCount>0 ? `Es gibt ${hrCount} kroatische Stimme(n). Aktuell benutzt: ${esc(cur ? cur.name : 'keine')}.`
+    : `Keine kroatische Stimme gefunden (${vs.length} Stimmen insgesamt). Ohne sie spricht der Browser Kroatisch mit einer anderen Stimme, zum Beispiel Deutsch.`;
+  return `<div class="tip">${info}</div>
+  <label class="field"><span>Stimme für Kroatisch</span><select data-voice="hr">${opts}</select></label>
+  <div class="row" style="margin-top:10px"><button class="btn" data-action="speak" data-text="Dobar dan, dobro došli u Hrvatsku">Stimme testen</button><button class="btn" data-action="voices-refresh">Liste aktualisieren</button></div>
+  ${(hrCount===0 && vs.length) ? '<p class="small">Tipp: In Windows unter Zeit und Sprache bei Kroatisch die Sprachausgabe (Text-to-Speech) installieren und den Browser neu starten. In Microsoft Edge gibt es zusätzlich Online-Stimmen für Kroatisch.</p>' : ''}`;
+}
+app.addEventListener('change', e => {
+  const el = e.target.closest('[data-voice]'); if(!el) return;
+  voicePref.hr = el.value;
+  try{ localStorage.setItem('hr-voice-v1', JSON.stringify(voicePref)); }catch(err){}
+  loadVoices();
+});
 function viewAbc(){
   loadVoices();
-  let nv = 0; try{ nv = speechSynthesis.getVoices().length; }catch(e){}
-  const status = !('speechSynthesis' in window) ? 'Dieser Browser bietet keine Sprachausgabe. Bitte die Seite direkt in Chrome öffnen, nicht in der Claude-App.'
-    : hrVoice ? `Kroatische Stimme gefunden (${esc(hrVoice.name)}). <br><button class="btn" style="margin-top:8px" data-action="speak" data-text="Dobar dan, dobro došli u Hrvatsku">Stimme testen</button>`
-    : nv===0 ? 'Der Browser meldet keine Stimmenliste. Das ist in der Claude-App üblich. Zum Testen die Seite direkt in Chrome öffnen. <br><button class="btn" style="margin-top:8px" data-action="speak" data-text="Dobar dan, dobro došli u Hrvatsku">Stimme testen</button>'
-    : 'Keine kroatische Stimme gefunden. In den Einstellungen unter Text-in-Sprache-Ausgabe lässt sich Kroatisch installieren. <br><button class="btn" style="margin-top:8px" data-action="speak" data-text="Dobar dan, dobro došli u Hrvatsku">Trotzdem testen</button>';
   return `<h2 style="font-size:34px;margin-top:22px">Aussprache</h2>
   <p class="small" style="margin:6px 0 0">Kroatisch wird fast genauso gesprochen, wie es geschrieben wird. Es gibt keine stummen Buchstaben.</p>
-  <div class="tip">${status}</div>
+  ${voiceSection()}
   <div class="scroll-x"><table><thead><tr><th>Buchstabe</th><th>Klingt wie</th><th>Beispiel</th><th></th></tr></thead><tbody>
   ${ABC.map(r => `<tr><td class="ch">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}<br><span class="small">${esc(r[3])}</span></td>
     <td><button class="speak" data-action="speak" data-text="${esc(r[2].split(' (')[0])}" aria-label="Anhören">🔊</button></td></tr>`).join('')}
@@ -1290,7 +1383,7 @@ function say(text, lang, rate){
     let done = false, timer;
     const fin = () => { if(!done){ done = true; clearTimeout(timer); resolve(); } };
     const u = new SpeechSynthesisUtterance(speechText(text));
-    u.lang = lang; u.rate = rate;
+    applyVoice(u, lang); u.rate = rate;
     u.onend = () => { A.errors = 0; fin(); };
     u.onerror = e => { if(e && e.error && e.error!=='canceled' && e.error!=='interrupted') A.errors++; fin(); };
     timer = setTimeout(fin, 20000);
@@ -1560,6 +1653,7 @@ app.addEventListener('change', e => {
 
 const actions = {
   speak: el => speak(el.dataset.text),
+  'voices-refresh': () => { loadVoices(); render(false); },
   home: () => go('home'),
   'open-cat': el => { S.catId = el.dataset.id; go('cat'); },
   'open-cat-back': () => go('cat'),
