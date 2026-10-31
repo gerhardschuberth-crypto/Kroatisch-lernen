@@ -45,7 +45,7 @@ h1,h2,h3{ font-family:'Bricolage Grotesque', 'Arial Narrow', system-ui, sans-ser
 .hello{
   all:unset; display:block; cursor:pointer;
   font-family:'Bricolage Grotesque','Arial Narrow',system-ui,sans-serif; font-weight:800;
-  font-size:clamp(52px, 17vw, 96px); line-height:.92; letter-spacing:-0.03em; color:var(--accent);
+  font-size:clamp(40px, 12.5vw, 84px); line-height:.92; letter-spacing:-0.03em; color:var(--accent);
 }
 .checker{
   height:16px; width:100%; margin:14px 0 12px; border-radius:2px;
@@ -1035,8 +1035,8 @@ const knownCount = list => list.filter(c => known[c.key]).length;
 /* ---------- Sprachausgabe ---------- */
 let hrVoice = null, warned = false;
 const isAndroid = /Android/i.test((typeof navigator !== 'undefined' && navigator.userAgent) || '');
-let voicePref = { hr:'' };
-try{ const p = JSON.parse(localStorage.getItem('hr-voice-v1') || '{}'); if(p && typeof p==='object') voicePref = Object.assign(voicePref, p); }catch(e){}
+let voicePref = { hr:'', lead:0 };
+try{ const p = JSON.parse(localStorage.getItem('hr-voice-v2') || '{}'); if(p && typeof p==='object') voicePref = Object.assign(voicePref, p); }catch(e){}
 function allVoices(){ try{ return speechSynthesis.getVoices() || []; }catch(e){ return []; } }
 function pickVoice(prefix){
   const vs = allVoices(); if(!vs.length) return null;
@@ -1052,23 +1052,47 @@ function applyVoice(u, lang){
   u.lang = v ? v.lang : lang;
   if(v && (!isAndroid || (prefix==='hr' && voicePref.hr))) u.voice = v;
 }
+const LEAD_IN = ['', ', ', ', , ', ', , , '];
+function leadIn(){ const n = parseInt(voicePref.lead, 10); return LEAD_IN[(n >= 0 && n <= 3) ? n : 2]; }
 function loadVoices(){ hrVoice = pickVoice('hr'); }
 if('speechSynthesis' in window){
   loadVoices();
   try{ speechSynthesis.addEventListener('voiceschanged', () => { loadVoices(); if(typeof S !== 'undefined' && S.view==='abc') render(false); }); }catch(e){}
 }
 function makeUtt(text){
-  const u = new SpeechSynthesisUtterance(text);
+  const u = new SpeechSynthesisUtterance(leadIn() + text);
   applyVoice(u, 'hr-HR');
   u.rate = 0.85;
   u.onerror = e => {
     const err = e && e.error;
     if(err && err!=='canceled' && err!=='interrupted'){ toast('Sprachausgabe nicht möglich (' + err + '). Bitte die Seite direkt in Chrome öffnen.'); }
   };
+  return trackUtt(u);
+}
+let speechGen = 0, speechPending = 0, lastSpeechEnd = 0, speakSeq = 0;
+try{
+  if('speechSynthesis' in window){
+    const rawCancel = speechSynthesis.cancel.bind(speechSynthesis);
+    speechSynthesis.cancel = () => { speechGen++; speechPending = 0; rawCancel(); };
+  }
+}catch(e){}
+function trackUtt(u){
+  const gen = speechGen; speechPending++;
+  const finish = () => { if(gen === speechGen && speechPending > 0) speechPending--; lastSpeechEnd = Date.now(); };
+  const oe = u.onend, oer = u.onerror;
+  u.onend = ev => { finish(); if(oe) oe(ev); };
+  u.onerror = ev => { finish(); if(oer) oer(ev); };
   return u;
 }
+function warmUp(){
+  if(Date.now() - lastSpeechEnd < 3000) return;
+  try{ const w = new SpeechSynthesisUtterance('.'); applyVoice(w, 'hr-HR'); w.volume = 0; w.rate = 2; speechSynthesis.speak(w); }catch(e){}
+  lastSpeechEnd = Date.now();
+}
 function stopSpeech(){
-  try{ if(speechSynthesis.speaking || speechSynthesis.pending){ speechSynthesis.cancel(); } }catch(e){}
+  const had = speechPending > 0;
+  if(had){ try{ speechSynthesis.cancel(); }catch(e){} }
+  return had;
 }
 function speak(text){
   if(!('speechSynthesis' in window)){ toast('In diesem Browser gibt es keine Sprachausgabe. Bitte die Seite direkt in Chrome öffnen.'); return; }
@@ -1076,15 +1100,16 @@ function speak(text){
   let n = 0; try{ n = speechSynthesis.getVoices().length; }catch(e){}
   if(n>0 && !hrVoice && !warned){ warned = true; toast('Keine kroatische Stimme gefunden. Die Aussprache kann ungenau sein.'); }
   try{
-    stopSpeech(); speechSynthesis.resume();
-    setTimeout(() => { try{ speechSynthesis.speak(makeUtt(text)); }catch(e){} }, 80);
+    const had = stopSpeech(); speechSynthesis.resume();
+    const mySeq = ++speakSeq;
+    setTimeout(() => { if(mySeq !== speakSeq) return; try{ warmUp(); speechSynthesis.speak(makeUtt(text)); }catch(e){} }, had ? 300 : 60);
   }catch(e){}
 }
 function speakAll(texts){
   if(!('speechSynthesis' in window)) return;
   try{
-    stopSpeech(); speechSynthesis.resume();
-    setTimeout(() => { try{ texts.forEach(t => speechSynthesis.speak(makeUtt(t))); }catch(e){} }, 80);
+    const had = stopSpeech(); speechSynthesis.resume();
+    setTimeout(() => { try{ warmUp(); texts.forEach(t => speechSynthesis.speak(makeUtt(t))); }catch(e){} }, had ? 300 : 80);
   }catch(e){}
 }
 let toastTimer;
@@ -1143,7 +1168,7 @@ function viewHome(){
       <i class="bar"><u style="width:${Math.round(100*k/cs.length)}%"></u></i></span></button>`;
   }).join('');
   return `<section class="hero">
-    <button class="hello" data-action="speak" data-text="Dobar dan" aria-label="Dobar dan anhören">Dobar dan!</button>
+    <button class="hello" data-action="speak" data-text="Dobar dan, Schubi" aria-label="Dobar dan, Schubi anhören">Dobar dan, Schubi!</button>
     <div class="checker" aria-hidden="true"></div>
     <p class="lede">Kroatisch für den Urlaub: Markt, Supermarkt, Küche und Smalltalk. Tippen Sie auf die Begrüßung, um sie zu hören.</p>
   </section>
@@ -1161,6 +1186,7 @@ function viewHome(){
   <div class="row" style="margin-top:12px">
     <button class="btn" data-action="quiz-start" data-id="all">Quiz über alles</button>
     <button class="btn" data-action="auto-open">🚗 Auto-Modus</button>
+    <button class="btn" data-action="goabc">🔤 Aussprache & Stimme</button>
   </div>
   <h2 class="sec-title">Themen</h2>
   <div class="topics">${topics}</div>`;
@@ -1298,13 +1324,14 @@ function voiceSection(){
     : `Keine kroatische Stimme gefunden (${vs.length} Stimmen insgesamt). Ohne sie spricht der Browser Kroatisch mit einer anderen Stimme, zum Beispiel Deutsch.`;
   return `<div class="tip">${info}</div>
   <label class="field"><span>Stimme für Kroatisch</span><select data-voice="hr">${opts}</select></label>
+  <label class="field"><span>Anlauf-Pause gegen verschluckte Wortanfänge</span><select data-voice="lead">${[[0,'Aus'],[1,'Kurz'],[2,'Mittel'],[3,'Lang']].map(a => `<option value="${a[0]}" ${parseInt(voicePref.lead,10)===a[0]?'selected':''}>${a[1]}</option>`).join('')}</select></label>
   <div class="row" style="margin-top:10px"><button class="btn" data-action="speak" data-text="Dobar dan, dobro došli u Hrvatsku">Stimme testen</button><button class="btn" data-action="voices-refresh">Liste aktualisieren</button></div>
   ${(hrCount===0 && vs.length) ? '<p class="small">Tipp: In Windows unter Zeit und Sprache bei Kroatisch die Sprachausgabe (Text-to-Speech) installieren und den Browser neu starten. In Microsoft Edge gibt es zusätzlich Online-Stimmen für Kroatisch.</p>' : ''}`;
 }
 app.addEventListener('change', e => {
   const el = e.target.closest('[data-voice]'); if(!el) return;
-  voicePref.hr = el.value;
-  try{ localStorage.setItem('hr-voice-v1', JSON.stringify(voicePref)); }catch(err){}
+  const k = el.dataset.voice; voicePref[k] = (k==='lead') ? parseInt(el.value, 10) : el.value;
+  try{ localStorage.setItem('hr-voice-v2', JSON.stringify(voicePref)); }catch(err){}
   loadVoices();
 });
 function viewAbc(){
@@ -1382,12 +1409,13 @@ function say(text, lang, rate){
     if(!('speechSynthesis' in window)){ A.errors = 99; resolve(); return; }
     let done = false, timer;
     const fin = () => { if(!done){ done = true; clearTimeout(timer); resolve(); } };
-    const u = new SpeechSynthesisUtterance(speechText(text));
+    const u = new SpeechSynthesisUtterance(leadIn() + speechText(text));
     applyVoice(u, lang); u.rate = rate;
     u.onend = () => { A.errors = 0; fin(); };
     u.onerror = e => { if(e && e.error && e.error!=='canceled' && e.error!=='interrupted') A.errors++; fin(); };
+    trackUtt(u);
     timer = setTimeout(fin, 20000);
-    try{ speechSynthesis.speak(u); }catch(e){ A.errors++; fin(); }
+    try{ warmUp(); speechSynthesis.speak(u); }catch(e){ A.errors++; fin(); }
   });
 }
 async function waitMs(ms, token){
@@ -1653,6 +1681,7 @@ app.addEventListener('change', e => {
 
 const actions = {
   speak: el => speak(el.dataset.text),
+  goabc: () => go('abc'),
   'voices-refresh': () => { loadVoices(); render(false); },
   home: () => go('home'),
   'open-cat': el => { S.catId = el.dataset.id; go('cat'); },
