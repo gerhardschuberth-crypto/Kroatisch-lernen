@@ -1001,7 +1001,7 @@ const INTERVALS = [1,3,7,16,35];
 const PLAN = ['zahlen','richtung','basis','markt','super','resto','gemuese','fisch','vorrat','koch','keto','spez','camp','kalender','farben','alltag','flirt','derb'];
 let srs = {};
 try{ const raw = localStorage.getItem('hr-srs-v1'); const p = raw ? JSON.parse(raw) : {}; if(p && typeof p==='object') srs = p; }catch(e){ srs = {}; }
-function save(){ try{ localStorage.setItem('hr-srs-v1', JSON.stringify(srs)); }catch(e){} }
+function save(){ try{ localStorage.setItem('hr-srs-v1', JSON.stringify(srs)); }catch(e){} try{ fsAutoSave(); }catch(e){} }
 try{
   const old = localStorage.getItem('hr-known-v1');
   if(old){ const p = JSON.parse(old); for(const k in p){ if(p[k] && !srs[k]) srs[k] = { b:1, d:today()+1 }; } save(); localStorage.removeItem('hr-known-v1'); }
@@ -1161,6 +1161,7 @@ function render(scroll=true){
   nav.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.nav===tab));
   if(scroll) window.scrollTo(0,0);
   if(v==='dict') bindDict();
+  if(v==='sync') fsStatus();
 }
 
 function dirToggle(){
@@ -1746,54 +1747,70 @@ function doImport(replace){
     const out = document.getElementById('sync-out'); if(out) out.value = exportProgress();
   }catch(e){ syncMsg('Das ist kein gültiger Lernstand. Bitte den ganzen Text einfügen, er beginnt mit HRLERN1:'); }
 }
-const NC_KEY = 'hr-nc-v1';
-let nc = { link:'', pass:'' };
-try{ const p = JSON.parse(localStorage.getItem(NC_KEY) || '{}'); if(p && typeof p==='object') nc = Object.assign(nc, p); }catch(e){}
-function saveNc(){ try{ localStorage.setItem(NC_KEY, JSON.stringify(nc)); }catch(e){} }
-function ncRead(){
-  const l = document.getElementById('nc-link'), p = document.getElementById('nc-pass');
-  if(l) nc.link = l.value.trim();
-  if(p) nc.pass = p.value;
-  saveNc();
-}
-function ncInfo(){
-  const m = /^(https?:\/\/.+?)\/(?:index\.php\/)?s\/([A-Za-z0-9_-]+)/.exec((nc.link || '').trim());
-  if(!m) return null;
-  return { url: m[1] + '/public.php/webdav/kroatisch-lernstand.txt', auth: 'Basic ' + btoa(m[2] + ':' + (nc.pass || '')) };
-}
-function ncMsg(t){ const el = document.getElementById('nc-msg'); if(el) el.textContent = t; }
-function ncFail(){
-  ncMsg('Der Zugriff hat nicht geklappt. Meist blockiert der Nextcloud-Server Aufrufe von fremden Webseiten (CORS), oder die Freigabe ist nicht erreichbar. Nutze dann „Als Datei speichern“ und stelle den Download-Ordner deines Browsers auf den Nextcloud-Ordner um.');
-}
-async function ncUpload(){
-  ncRead();
-  const info = ncInfo();
-  if(!info){ ncMsg('Bitte zuerst den Freigabelink eintragen. Er sieht so aus: https://dein-server/s/ABC123'); return; }
-  ncMsg('Lade hoch …');
+/* ---------- Ordner verknüpfen (nur PC) ---------- */
+const FS_FILE = 'kroatisch-lernstand.txt';
+function idbOpen(){ return new Promise((res, rej) => { const r = indexedDB.open('hr-fs', 1); r.onupgradeneeded = () => r.result.createObjectStore('h'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+async function idbGet(k){ const db = await idbOpen(); return new Promise((res, rej) => { const q = db.transaction('h').objectStore('h').get(k); q.onsuccess = () => res(q.result || null); q.onerror = () => rej(q.error); }); }
+async function idbSet(k, v){ const db = await idbOpen(); return new Promise((res, rej) => { const tx = db.transaction('h', 'readwrite'); tx.objectStore('h').put(v, k); tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error); }); }
+let dirHandle = null, fsTimer = null;
+async function fsLoadHandle(){ try{ const h = await idbGet('dir'); if(h) dirHandle = h; }catch(e){} return dirHandle; }
+async function fsPerm(ask){
+  if(!dirHandle) return false;
   try{
-    const res = await fetch(info.url, { method:'PUT', headers:{ 'Authorization': info.auth, 'Content-Type':'text/plain' }, body: exportProgress() });
-    if(res.ok) ncMsg('Hochgeladen als kroatisch-lernstand.txt in deinen Nextcloud-Ordner.');
-    else if(res.status===401 || res.status===403) ncMsg('Nextcloud verweigert den Zugriff (' + res.status + '). Prüfe das Passwort und ob die Freigabe „Bearbeiten erlauben“ hat.');
-    else ncMsg('Nextcloud meldet den Fehler ' + res.status + '.');
-  }catch(e){ ncFail(); }
+    const opts = { mode:'readwrite' };
+    if((await dirHandle.queryPermission(opts)) === 'granted') return true;
+    if(ask && (await dirHandle.requestPermission(opts)) === 'granted') return true;
+  }catch(e){}
+  return false;
 }
-async function ncDownload(){
-  ncRead();
-  const info = ncInfo();
-  if(!info){ ncMsg('Bitte zuerst den Freigabelink eintragen. Er sieht so aus: https://dein-server/s/ABC123'); return; }
-  ncMsg('Lade …');
+function fsMsg(t){ const el = document.getElementById('fs-msg'); if(el) el.textContent = t; }
+async function fsStatus(){
+  const el = document.getElementById('fs-status'); if(!el) return;
+  await fsLoadHandle();
+  if(!dirHandle){ el.textContent = 'Noch kein Ordner verknüpft.'; return; }
+  const ok = await fsPerm(false);
+  el.textContent = 'Ordner: „' + dirHandle.name + '“. ' + (ok ? 'Zugriff erlaubt, automatisches Speichern ist an.' : 'Der Zugriff muss in diesem Browser-Start noch bestätigt werden. Tippe dazu auf „In Ordner speichern“ oder „Aus Ordner laden“.');
+}
+async function fsPick(){
   try{
-    const res = await fetch(info.url, { method:'GET', headers:{ 'Authorization': info.auth } });
-    if(res.ok){
-      const t = await res.text();
-      const ta = document.getElementById('sync-in'); if(ta) ta.value = t;
-      ncMsg('Geladen. Jetzt oben „Zusammenführen“ drücken.');
-    }
-    else if(res.status===404) ncMsg('In diesem Ordner liegt noch keine Datei kroatisch-lernstand.txt. Lade erst hoch.');
-    else if(res.status===401 || res.status===403) ncMsg('Nextcloud verweigert den Zugriff (' + res.status + '). Prüfe das Passwort und die Freigabe.');
-    else ncMsg('Nextcloud meldet den Fehler ' + res.status + '.');
-  }catch(e){ ncFail(); }
+    const h = await window.showDirectoryPicker({ mode:'readwrite' });
+    dirHandle = h; await idbSet('dir', h);
+    fsMsg('Ordner „' + h.name + '“ verknüpft.'); fsStatus();
+  }catch(e){
+    if(e && e.name === 'AbortError') return;
+    fsMsg('Der Ordner konnte nicht verknüpft werden. Wähle einen Unterordner, nicht das ganze Laufwerk.');
+  }
 }
+async function fsWriteNow(){
+  const fh = await dirHandle.getFileHandle(FS_FILE, { create:true });
+  const w = await fh.createWritable(); await w.write(exportProgress()); await w.close();
+}
+async function fsSave(){
+  if(!dirHandle){ fsMsg('Zuerst einen Ordner wählen.'); return; }
+  if(!(await fsPerm(true))){ fsMsg('Kein Zugriff auf den Ordner. Ist das Laufwerk verbunden (VPN)?'); return; }
+  try{ await fsWriteNow(); fsMsg('Gespeichert in „' + dirHandle.name + '“ als ' + FS_FILE + '.'); fsStatus(); }
+  catch(e){ fsMsg('Schreiben hat nicht geklappt. Ist das Laufwerk erreichbar und nicht schreibgeschützt?'); }
+}
+async function fsLoad(){
+  if(!dirHandle){ fsMsg('Zuerst einen Ordner wählen.'); return; }
+  if(!(await fsPerm(true))){ fsMsg('Kein Zugriff auf den Ordner. Ist das Laufwerk verbunden (VPN)?'); return; }
+  try{
+    const fh = await dirHandle.getFileHandle(FS_FILE);
+    const text = await (await fh.getFile()).text();
+    const r = importProgress(text, false);
+    fsMsg('Geladen: ' + r.added + ' neue Karten, ' + r.updated + ' aktualisiert.');
+    const out = document.getElementById('sync-out'); if(out) out.value = exportProgress();
+    fsStatus();
+  }catch(e){
+    fsMsg(e && e.name === 'NotFoundError' ? 'In diesem Ordner liegt noch keine Datei ' + FS_FILE + '. Tippe erst auf „In Ordner speichern“.' : 'Die Datei konnte nicht gelesen werden. Ist das Laufwerk erreichbar und der Inhalt vollständig?');
+  }
+}
+function fsAutoSave(){
+  if(!dirHandle) return;
+  clearTimeout(fsTimer);
+  fsTimer = setTimeout(async () => { try{ if(await fsPerm(false)) await fsWriteNow(); }catch(e){} }, 3000);
+}
+if(typeof indexedDB !== 'undefined'){ fsLoadHandle(); }
 function viewSync(){
   const text = exportProgress(), n = Object.keys(srs).length;
   return `<button class="back" data-action="home">‹ Zurück</button>
@@ -1808,13 +1825,11 @@ function viewSync(){
   <div class="row" style="margin-top:10px"><button class="btn primary" data-action="sync-merge">Zusammenführen</button><button class="btn" data-action="sync-replace">Ersetzen</button></div>
   <p class="small" id="sync-msg" style="margin-top:10px"></p>
   <p class="small">Zusammenführen behält pro Karte den weiter fortgeschrittenen Stand und löscht nichts. Ersetzen löscht deinen aktuellen Stand und übernimmt den importierten.</p>
-  <h2 class="sec-title">3. Nextcloud (optional)</h2>
-  <p class="small" style="margin:0 0 6px">Trage hier einen Freigabelink für einen <b>Ordner mit „Bearbeiten erlauben“</b> ein. Dann lädt die App den Lernstand direkt dorthin und holt ihn von dort, ohne Kopieren. Das klappt nur, wenn dein Nextcloud-Server Zugriffe von dieser Webseite erlaubt.</p>
-  <label class="field"><span>Freigabelink</span><input id="nc-link" class="search" type="url" placeholder="https://dein-server/s/ABC123" value="${esc(nc.link)}" style="margin-top:0"></label>
-  <label class="field"><span>Passwort der Freigabe (falls gesetzt)</span><input id="nc-pass" class="search" type="password" value="${esc(nc.pass)}" style="margin-top:0"></label>
-  <div class="row" style="margin-top:10px"><button class="btn primary" data-action="nc-up">Nach Nextcloud hochladen</button><button class="btn" data-action="nc-down">Von Nextcloud laden</button></div>
-  <p class="small" id="nc-msg" style="margin-top:10px"></p>
-  <p class="small">Der Link und das Passwort werden nur in diesem Browser gespeichert.</p>`;
+  <h2 class="sec-title">3. Ordner am PC</h2>
+  ${typeof window.showDirectoryPicker === 'function' ? `<p class="small" style="margin:0 0 6px">Wähle einmal einen Ordner, zum Beispiel auf deinem Netzlaufwerk oder im Qsync-Ordner. Die App speichert den Lernstand dort in die Datei kroatisch-lernstand.txt und liest ihn von dort. Wähle einen Unterordner, nicht das ganze Laufwerk.</p>
+  <p class="small" id="fs-status" style="margin:0 0 6px"></p>
+  <div class="row"><button class="btn primary" data-action="fs-pick">Ordner wählen</button><button class="btn" data-action="fs-save">In Ordner speichern</button><button class="btn" data-action="fs-load">Aus Ordner laden</button></div>
+  <p class="small" id="fs-msg" style="margin-top:10px"></p>` : `<p class="small">Diese Funktion gibt es nur am PC in Chrome oder Edge. In diesem Browser bleibt es bei „Als Datei speichern“ und „Datei wählen“.</p>`}`;
 }
 app.addEventListener('change', e => {
   if(!e.target || e.target.id !== 'sync-file-in') return;
@@ -1844,8 +1859,9 @@ const actions = {
   },
   'sync-merge': () => doImport(false),
   'sync-replace': () => doImport(true),
-  'nc-up': () => ncUpload(),
-  'nc-down': () => ncDownload(),
+  'fs-pick': () => fsPick(),
+  'fs-save': () => fsSave(),
+  'fs-load': () => fsLoad(),
   'voices-refresh': () => { loadVoices(); render(false); },
   home: () => go('home'),
   'open-cat': el => { S.catId = el.dataset.id; go('cat'); },
