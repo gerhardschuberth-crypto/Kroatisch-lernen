@@ -45,7 +45,7 @@ h1,h2,h3{ font-family:'Bricolage Grotesque', 'Arial Narrow', system-ui, sans-ser
 .hello{
   all:unset; display:block; cursor:pointer;
   font-family:'Bricolage Grotesque','Arial Narrow',system-ui,sans-serif; font-weight:800;
-  font-size:clamp(40px, 12.5vw, 84px); line-height:.92; letter-spacing:-0.03em; color:var(--accent);
+  font-size:clamp(30px, 7vw, 52px); line-height:.92; letter-spacing:-0.03em; color:var(--accent);
 }
 .checker{
   height:16px; width:100%; margin:14px 0 12px; border-radius:2px;
@@ -1318,14 +1318,14 @@ function voiceSection(){
   const sorted = vs.slice().sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
   const hrCount = vs.filter(v => /^hr/i.test(v.lang)).length;
   const cur = pickVoice('hr');
-  const opts = ['<option value="">Automatisch</option>'].concat(sorted.map(v => `<option value="${esc(v.name)}" ${voicePref.hr===v.name?'selected':''}>${esc(v.name)} (${esc(v.lang)})</option>`)).join('');
-  const info = vs.length===0 ? 'Der Browser meldet noch keine Stimmen. Die Seite neu laden oder „Liste aktualisieren“ drücken.'
+  const opts = ['<option value="">Automatisch</option>'].concat(sorted.map(v => `<option value="${esc(v.name)}" ${voicePref.hr===v.name?'selected':''}>${/natural|online/i.test(v.name) ? '★ ' : ''}${esc(v.name)} (${esc(v.lang)})</option>`)).join('');
+  const info = vs.length===0 ? 'Der Browser meldet noch keine Stimmen. Die Seite neu laden oder „Stimmen neu laden“ drücken.'
     : hrCount>0 ? `Es gibt ${hrCount} kroatische Stimme(n). Aktuell benutzt: ${esc(cur ? cur.name : 'keine')}.`
     : `Keine kroatische Stimme gefunden (${vs.length} Stimmen insgesamt). Ohne sie spricht der Browser Kroatisch mit einer anderen Stimme, zum Beispiel Deutsch.`;
   return `<div class="tip">${info}</div>
   <label class="field"><span>Stimme für Kroatisch</span><select data-voice="hr">${opts}</select></label>
   <label class="field"><span>Anlauf-Pause gegen verschluckte Wortanfänge</span><select data-voice="lead">${[[0,'Aus'],[1,'Kurz'],[2,'Mittel'],[3,'Lang']].map(a => `<option value="${a[0]}" ${parseInt(voicePref.lead,10)===a[0]?'selected':''}>${a[1]}</option>`).join('')}</select></label>
-  <div class="row" style="margin-top:10px"><button class="btn" data-action="speak" data-text="Dobar dan, dobro došli u Hrvatsku">Stimme testen</button><button class="btn" data-action="voices-refresh">Liste aktualisieren</button></div>
+  <div class="row" style="margin-top:10px"><button class="btn" data-action="speak" data-text="Dobar dan, dobro došli u Hrvatsku">Stimme testen</button><button class="btn" data-action="voices-refresh">Stimmen neu laden</button></div>
   ${(hrCount===0 && vs.length) ? '<p class="small">Tipp: In Windows unter Zeit und Sprache bei Kroatisch die Sprachausgabe (Text-to-Speech) installieren und den Browser neu starten. In Microsoft Edge gibt es zusätzlich Online-Stimmen für Kroatisch.</p>' : ''}`;
 }
 app.addEventListener('change', e => {
