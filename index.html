@@ -1746,6 +1746,54 @@ function doImport(replace){
     const out = document.getElementById('sync-out'); if(out) out.value = exportProgress();
   }catch(e){ syncMsg('Das ist kein gültiger Lernstand. Bitte den ganzen Text einfügen, er beginnt mit HRLERN1:'); }
 }
+const NC_KEY = 'hr-nc-v1';
+let nc = { link:'', pass:'' };
+try{ const p = JSON.parse(localStorage.getItem(NC_KEY) || '{}'); if(p && typeof p==='object') nc = Object.assign(nc, p); }catch(e){}
+function saveNc(){ try{ localStorage.setItem(NC_KEY, JSON.stringify(nc)); }catch(e){} }
+function ncRead(){
+  const l = document.getElementById('nc-link'), p = document.getElementById('nc-pass');
+  if(l) nc.link = l.value.trim();
+  if(p) nc.pass = p.value;
+  saveNc();
+}
+function ncInfo(){
+  const m = /^(https?:\/\/.+?)\/(?:index\.php\/)?s\/([A-Za-z0-9_-]+)/.exec((nc.link || '').trim());
+  if(!m) return null;
+  return { url: m[1] + '/public.php/webdav/kroatisch-lernstand.txt', auth: 'Basic ' + btoa(m[2] + ':' + (nc.pass || '')) };
+}
+function ncMsg(t){ const el = document.getElementById('nc-msg'); if(el) el.textContent = t; }
+function ncFail(){
+  ncMsg('Der Zugriff hat nicht geklappt. Meist blockiert der Nextcloud-Server Aufrufe von fremden Webseiten (CORS), oder die Freigabe ist nicht erreichbar. Nutze dann „Als Datei speichern“ und stelle den Download-Ordner deines Browsers auf den Nextcloud-Ordner um.');
+}
+async function ncUpload(){
+  ncRead();
+  const info = ncInfo();
+  if(!info){ ncMsg('Bitte zuerst den Freigabelink eintragen. Er sieht so aus: https://dein-server/s/ABC123'); return; }
+  ncMsg('Lade hoch …');
+  try{
+    const res = await fetch(info.url, { method:'PUT', headers:{ 'Authorization': info.auth, 'Content-Type':'text/plain' }, body: exportProgress() });
+    if(res.ok) ncMsg('Hochgeladen als kroatisch-lernstand.txt in deinen Nextcloud-Ordner.');
+    else if(res.status===401 || res.status===403) ncMsg('Nextcloud verweigert den Zugriff (' + res.status + '). Prüfe das Passwort und ob die Freigabe „Bearbeiten erlauben“ hat.');
+    else ncMsg('Nextcloud meldet den Fehler ' + res.status + '.');
+  }catch(e){ ncFail(); }
+}
+async function ncDownload(){
+  ncRead();
+  const info = ncInfo();
+  if(!info){ ncMsg('Bitte zuerst den Freigabelink eintragen. Er sieht so aus: https://dein-server/s/ABC123'); return; }
+  ncMsg('Lade …');
+  try{
+    const res = await fetch(info.url, { method:'GET', headers:{ 'Authorization': info.auth } });
+    if(res.ok){
+      const t = await res.text();
+      const ta = document.getElementById('sync-in'); if(ta) ta.value = t;
+      ncMsg('Geladen. Jetzt oben „Zusammenführen“ drücken.');
+    }
+    else if(res.status===404) ncMsg('In diesem Ordner liegt noch keine Datei kroatisch-lernstand.txt. Lade erst hoch.');
+    else if(res.status===401 || res.status===403) ncMsg('Nextcloud verweigert den Zugriff (' + res.status + '). Prüfe das Passwort und die Freigabe.');
+    else ncMsg('Nextcloud meldet den Fehler ' + res.status + '.');
+  }catch(e){ ncFail(); }
+}
 function viewSync(){
   const text = exportProgress(), n = Object.keys(srs).length;
   return `<button class="back" data-action="home">‹ Zurück</button>
@@ -1759,7 +1807,14 @@ function viewSync(){
   <label class="field"><span>oder eine gespeicherte Datei wählen</span><input type="file" id="sync-file-in" accept=".txt,.json,text/plain" class="search" style="padding:10px"></label>
   <div class="row" style="margin-top:10px"><button class="btn primary" data-action="sync-merge">Zusammenführen</button><button class="btn" data-action="sync-replace">Ersetzen</button></div>
   <p class="small" id="sync-msg" style="margin-top:10px"></p>
-  <p class="small">Zusammenführen behält pro Karte den weiter fortgeschrittenen Stand und löscht nichts. Ersetzen löscht deinen aktuellen Stand und übernimmt den importierten.</p>`;
+  <p class="small">Zusammenführen behält pro Karte den weiter fortgeschrittenen Stand und löscht nichts. Ersetzen löscht deinen aktuellen Stand und übernimmt den importierten.</p>
+  <h2 class="sec-title">3. Nextcloud (optional)</h2>
+  <p class="small" style="margin:0 0 6px">Trage hier einen Freigabelink für einen <b>Ordner mit „Bearbeiten erlauben“</b> ein. Dann lädt die App den Lernstand direkt dorthin und holt ihn von dort, ohne Kopieren. Das klappt nur, wenn dein Nextcloud-Server Zugriffe von dieser Webseite erlaubt.</p>
+  <label class="field"><span>Freigabelink</span><input id="nc-link" class="search" type="url" placeholder="https://dein-server/s/ABC123" value="${esc(nc.link)}" style="margin-top:0"></label>
+  <label class="field"><span>Passwort der Freigabe (falls gesetzt)</span><input id="nc-pass" class="search" type="password" value="${esc(nc.pass)}" style="margin-top:0"></label>
+  <div class="row" style="margin-top:10px"><button class="btn primary" data-action="nc-up">Nach Nextcloud hochladen</button><button class="btn" data-action="nc-down">Von Nextcloud laden</button></div>
+  <p class="small" id="nc-msg" style="margin-top:10px"></p>
+  <p class="small">Der Link und das Passwort werden nur in diesem Browser gespeichert.</p>`;
 }
 app.addEventListener('change', e => {
   if(!e.target || e.target.id !== 'sync-file-in') return;
@@ -1789,6 +1844,8 @@ const actions = {
   },
   'sync-merge': () => doImport(false),
   'sync-replace': () => doImport(true),
+  'nc-up': () => ncUpload(),
+  'nc-down': () => ncDownload(),
   'voices-refresh': () => { loadVoices(); render(false); },
   home: () => go('home'),
   'open-cat': el => { S.catId = el.dataset.id; go('cat'); },
